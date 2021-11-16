@@ -5,17 +5,6 @@
 <head>
   <link rel="stylesheet" href="../css/master.css">
   <meta charset="utf-8">
-  <script type="text/javascript">
-  $(document).ready(function(){
-    $('.cta').css({ 'text-align':'center' });
-    var h1 = $('h1').height();
-    var h = h1/2;
-    var w1 = $(window).height();
-    var w = w1/2;
-    var m = w - h
-    $('.cta').css("margin-top",m + "px")
-  });
-  </script>
   <link rel="shortcut icon" type="image/x-icon" href="../img/favicon.ico" />
   <script type="text/javascript">
         msg = " - ";
@@ -36,6 +25,17 @@
 </head>
 
 <body class="disable-select">
+  <script type="text/javascript">
+  $(document).ready(function(){
+    $('.cta').css({ 'text-align':'center' });
+    var h1 = $('h1').height();
+    var h = h1/2;
+    var w1 = $(window).height();
+    var w = w1/2;
+    var m = w - h
+    $('.cta').css("margin-top",m + "px")
+  });
+  </script>
   <script type="text/javascript">
   document.addEventListener('contextmenu', event => event.preventDefault());
 </script>
