@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+
+
+<html lang="en" dir="ltr">
+<head>
+  <link rel="stylesheet" href="../css/master.css">
+  <link rel="stylesheet" href="../css/game.css">
+  <meta charset="utf-8">
+  <link rel="shortcut icon" type="image/x-icon" href="../img/favicon.ico" />
+  <script type="text/javascript">
+        msg = " - ";
+        msg = " Chocolate game! " + msg;position = 0;
+        function scrolltitle() {
+            document.title = msg.substring(position, msg.length) + msg.substring(0, position); position++;
+            if (position > msg.length) position = 0
+            window.setTimeout("scrolltitle()", 400);
+        }
+    scrolltitle();
+        </script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js" type="text/javascript"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/1.9.2/TweenMax.min.js" type="text/javascript"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.3/modernizr.min.js" type="text/javascript"></script>
+  <script type="text/javascript" src="../js/brython.js"></script>
+  <script type="text/javascript" src="../js/brython_stdlib.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.8.0/gsap.min.js"></script>
+</head>
+
+<body class="rectangleSoft">
+  <canvas id="myCanvas" width="1000" height="600">
+  </canvas>
+  <div>
+    <hr></hr>
+  </div>
+  <div class="v1">
+    </div>
+  <gName> Players: </gName>
+  <div class="Player">
+    <img src="../img/player.png" alt="Player">
+    <t> P1 </t>
+  </div>
+  <div class="AI">
+    <img src="../img/AI.png" alt="AI">
+    <t1> AI </t1>
+  </div>
+<!---
+TO USE FOR CHOCOLATE PATTERN REPETTION, LOOK FUNC: BACKGROUND-REPEAT;
+.five-star-line { height: 20px; background-image: url(img/5-star-rating.png); background-repeat: repeat-x; background-position: center; background-color: transparent; border: none; width: 50%; margin: auto; margin-top: 5%; margin-bottom: 5%; }
+--->
+
+</body>
+
+
+
+
+
+<!---
+Brython game starts here
+--->
+
+
+
+
+<body class="disable-select" onload="brython({debug: 1, indexedDB: false})">
+  <script type="text/python">
+  from copy import deepcopy
+  from random import randrange
+  from math import floor
+  from time import *
+
+  #================================== Versions ===============================#
+  #                                                                           #
+  #   v1.0 : 1v1                                                              #
+  #   v1.1 : IA aleatoire                                                     #
+  #   v1.2 : IA intelligente(debut) + choix de la taille du plateau           #
+  #   v1.3 : l'IA regarde 4 coup dans le future                               #
+  #   v1.3.1 : choix de la difficulter de l'IA                                #
+  #   v1.4 : test/debut de l'algorithme "alpha/beta"                          #
+  #
+  #
+  #
+
+
+
+
+  #==================================== Outil ===============================#
+
+
+  def ResetGrid(x_size,y_size):
+      """
+      f( int , int ) -> list
+      retourne la liste pour la partie avec la taille voulut"""
+      # Met la liste gridRest avec que des 1 avec y_size pour hauteur
+      # et x_size pour largeur
+      gridReset = []
+      for i in range(y_size):
+          x_liste = []
+          for j in range(x_size):
+              x_liste += [1]
+          gridReset += [x_liste]
+      return gridReset
+
+
+  def NombrePosition(gridTest):
+      """
+      f( list ) -> int
+      retourne le nombre de 1 present dans la liste en argument"""
+      nombre = 0
+      for i in range(len(gridTest)):
+          for j in range(len(gridTest[0])):
+              # compte le nombre de 1
+              if gridTest[i][j] == 1:
+                  nombre += 1
+      return nombre
+
+
+  def Remplace(x,y,gridModifie):
+      """
+      f( int , int , list ) -> list
+      retourne la liste entree en argument en lui changeant la ligne x
+      (en argument)et la colonne (y en argument)"""
+      # remplace a droite de la position jouer en (x;y)
+      save = gridModifie[y-1]
+      for i in range(len(save)):
+          if i+1 >= x:
+              save[i] = 0
+      gridModifie[y-1] = save
+
+      # remplace en bas de la position jouer en (x;y)
+      for i in range(y):
+          save = gridModifie[i]
+          save[x-1] = 0
+          gridModifie[i] = save
+      return gridModifie
+
+
+  def Contient(gridTest):
+      """
+      f( list ) -> bool
+      retourne True si la liste en argument contient 1 et False sinon"""
+
+      # verifie que la liste gridTest contient encore une cases non utiliser
+      if NombrePosition(gridTest) == 0:
+          return False
+      return True
+
+
+  def possible(x,y,grid):
+      """
+      f( str, str , list ) -> bool
+      retourne False si la position x;y (entre en argument) est  un 1
+      utilise VerifInput( str , int )"""
+
+      if VerifInput(x,len(grid[0])) or VerifInput(y,len(grid)):
+          return True
+      # verifie si on peut jouer a une position (x;y)
+      x = int(x)
+      y = int(y)
+      if grid[y-1][x-1] == 1:
+          return False
+      return True
+
+
+  def VerifInput(char,maxi):
+      """
+      f( str , int ) -> bool
+      retourne False si une chaine de caractere est valide et True sinon
+      (c'est pour l'entre de l'utilisateur)"""
+
+      # Evite que l'input soit faux
+      if char == "":
+          return True
+      if type(char) != str:
+          return True
+      # Verifie si char est un input acceptable ou non
+      charPossible = ["1","2","3","4","5","6","7","8","9","0"]
+      for i in char:
+          valid = False
+          for j in charPossible:
+              if j == i:
+                  valid = True
+          if valid == False:
+              return True
+      # Evite que l'input 0 soit renvoyer alors quelle n'est pas valide
+      # Alors que 10 ou 20 le sont
+      if char == "0":
+          return True
+      # Evite de jouer en dehors du plateau
+      if int(char) > maxi:
+          return True
+
+      # Si le programme arrive ici c'est que tout est bon donc il retourne False
+      return False
+
+
+  def MontreJeu(grid):
+      """
+      f( list )
+      permet l'affichage de la liste en argument soit le plateau"""
+
+      for i in range(len(grid)):
+          # affiche chaque element de la listedans la console
+          print(grid[len(grid)-i-1])
+
+
+
+
+
+
+
+
+
+  #=============================== IA developpement ==========================#
+
+
+  ################################# IA aleatoire ##############################
+
+  def IA_aleatoire(grid):
+      """
+      f( list ) -> list
+      retourne une position aleatoire
+      utilise:
+      possible( int , int or str , list ) et Remplace( int , int , list )"""
+
+      # Recupere toutes les possibilites de jouer et les met dans pos
+      pos = []
+      for i in range(len(grid)):
+          entre = grid[i]
+          for j in range(len(entre)):
+              if entre[j] == 1:
+                  pos += [[j+1,i+1]]
+      # Prend aleatoirement une position a jouer dans pos
+      rando = pos[randrange(0,len(pos))]
+      x = rando[0]
+      y = rando[1]
+
+      # Retourne la liste modifiee
+      return Remplace(x,y,grid)
+
+  ################################ IA 'intelligente' #############################
+
+  def Eval(Evaluation):
+      """
+      f( list ) -> list
+      retourne toutes les position possible de jouer au coup suivant
+      (fait pour evaluer les possibilites de l'IA)"""
+      newPosition = []
+      for loop1 in range(len(Evaluation)):
+          EvalX = Evaluation[loop1]
+          for loop2 in range(len(EvalX)):
+              if EvalX[loop2] != 0:
+                  # calcul le prochain coup
+                  newPosition += [[loop2+1,loop1+1]] + [Remplace(loop2+1,loop1+1,deepcopy(Evaluation))]
+      return newPosition
+
+
+  def ScoreCounter(grid,coup,player):
+      """
+      f( list , int , int ) -> int
+      retourne le score pour l'IA ou l'utilisateur en fonction de la position"""
+
+      Score = 0
+
+      # calcule le score du coup de l'IA
+      if Contient(grid) and player == 1:
+          if NombrePosition(grid) == 1:
+              Score += coup * 10
+          elif NombrePosition(grid) > 1:
+              Score += coup
+          else :
+              Score -= coup * 2
+
+      # calcule le score du coup apres l'IA par l'utilisateur
+      if NombrePosition(grid) > 1 and player == 2:
+              Score += coup
+      return Score
+
+
+
+
+  def CalculScore(Grid,position,best):
+      """
+      f( list , int , int ) -> int
+      retourne le score de la position Grid en argument
+      et des 3 coups suivants (mais plus est possible XD) """
+      coup = 10
+      Score = 0
+
+      # calcule le coup de l'IA
+
+      Score += ScoreCounter(deepcopy(Grid[(position*2)+1]),coup,1)
+      Tour2 = Eval(Grid[(position*2)+1])
+
+      # calcule le score du coup apres l'IA par l'utilisateur
+      coup -= 1
+      for toure2 in range(int(len(Tour2)/2)):
+          Score += ScoreCounter(deepcopy(Tour2[(toure2*2)+1]),coup,2)
+
+          if NombrePosition(Tour2[(toure2*2)+1]) > 0 and Score > (best/2):
+              Tour3 = Eval(Tour2[(toure2*2)+1])
+              coup -= 1
+
+              # calcule le coup de l'IA apres l'utilisateur
+              for toure3 in range(int(len(Tour3)/2)):
+                  Score += ScoreCounter(deepcopy(Tour3[(toure3*2)+1]),coup,1)
+
+                  if NombrePosition(Tour3[(toure3*2)+1]) > 0 and Score < (best* (2/3)):
+                      Tour4 = Eval(Tour3[(toure3*2)+1])
+                      coup -= 1
+
+                      # calcule le coup de l'utilisateur apres
+                      # l'IA qui est apres l'utilisateur
+                      for toure4 in range(int(len(Tour4)/2)):
+                          Score += ScoreCounter(deepcopy(Tour4[(toure4*2)+1]),coup,2)
+
+      # retourne le score total de la position Grid[(position*2)+1]
+      return Score
+
+
+
+
+
+
+
+
+  def IA_EvaluPossibilite(gridEval):
+      """
+      f( list ) -> list
+      retourne les scores calcules a partir des evaluations de la
+      fonction Eval( list ) et CalculScore( list , int , int )"""
+      ScoreEval = []
+      Tour1 = Eval(gridEval)
+      Best = -100000000
+      for toure1 in range(int(len(Tour1)/2)):
+          # Calcule le score de la position Tour1[toure1*2]
+          # (le premier coup est a 10 et decroit de 1 a chaque fois)
+          ScoreCoup = CalculScore(Tour1,toure1,Best)
+          if ScoreCoup > Best:
+              Best = ScoreCoup
+          ScoreEval += [Tour1[toure1*2],ScoreCoup]
+      print(ScoreEval)
+      return ScoreEval
+
+
+  def IA_forte(IA):
+      """
+      f( list ) -> list
+      retourne le meilleur score des positions (et si plusieurs on le meme
+      c'est de l'aleatoire qui decide pour eviter les repetitions)
+      calcule avec IA_EvaluPossibilite( list ) et utilise
+      Remplace( int , int , list )"""
+
+      AllScore = IA_EvaluPossibilite(IA)
+      best = -1000000000
+      for evalu in range(int(len(AllScore)/2)):
+          if AllScore[(evalu*2)+1] > best:
+              best = AllScore[(evalu*2)+1]
+              bestPosition = AllScore[(evalu*2)]
+          elif AllScore[(evalu*2)+1] == best and randrange(0,1) == 0:
+              bestPosition = AllScore[(evalu*2)]
+      print("l'IA jou en " + str(bestPosition))
+      return Remplace(int(bestPosition[0]),int(bestPosition[1]),IA)
+
+
+  #================================== Main game ==============================#
+
+
+
+  def Game_IA(x_size,y_size):
+      """
+      permet de jouer contre une IA jouant aleatoirement pour l'instant
+      fait l'affichage de la partie
+      utilise Contient( int , int , list ), possible( int , int or str , list )
+      et Remplace( int , int , list ) et IA_nul( list ) et ResetGrid( int , int )"""
+
+      # Remet le jeu a zero et fait la partie contre l'IA
+
+      grid = list(ResetGrid(x_size,y_size))
+      print("Entrez la difficulter de l'IA(max=10 / min=1, difficulter aleatoire par defaut)")
+      print("/!\ SI LE PLATEAU A UNE TAILLE SUPERIEUR A 10x10 N'UTILISEZ PAS L'IA FORTE !!")
+      difficulter = input()
+      if not(VerifInput(difficulter,10)):
+          difficulter = int(difficulter)
+      else:
+          if x_size * y_size < 65:
+              difficulter = randrange(1,10)
+          else:
+              difficulter = 1
+      print("Difficulter choisie : " + str(difficulter))
+      joueur = randrange(0,1)
+      if joueur == 1:
+          print("L'IA commence")
+      else:
+          print("A vous de jouer")
+
+      # Continut tant que l'on peut jouer
+      # bref tant que la liste grid contient des 1
+      while Contient(grid):
+          if joueur == 0:
+              # evite du code innutile (repetion de la boucle while)
+              x = "no"
+              y = 0
+              while possible(x,y,grid):
+                  if x != "no":
+                      print("mauvaise entre")
+                  MontreJeu(grid)
+                  print("joueur: " + str(joueur + 1))
+                  print("Quelle valeur de x? ")
+                  x = input()
+                  print("Quelle valeur de y? ")
+                  y = input()
+
+              # L'entree est correct donc on joue:
+              grid = Remplace(int(x),int(y),deepcopy(grid))
+          else:
+              print("Tour de l'IA")
+              if randrange(1,difficulter) == 0 and difficulter != 10:
+                  # Fait jouer l'IA debile
+                  grid = IA_aleatoire(grid)
+              else:
+                  # Fait joure l'IA intelligente
+                  t = time()
+                  grid = IA_forte(deepcopy(grid))
+                  print(time()-t)
+          joueur = 1 - joueur
+      MontreJeu(grid)
+      if joueur == 0:
+          print("Vous avez gagner!!!!")
+      else:
+          print("L'IA a gagner !!")
+
+
+
+  def JoueurContreJoueur(x_size,y_size):
+      """
+      permet de jouer a deux (joueur vs joueur)
+      utilise Remplace( int , int , list ),
+      possible( int , int or str  , list ), Contient( list )
+      et ResetGrid( int , int )"""
+
+      # permet de faire joueur vs joueur avec l'affichage
+      grid = ResetGrid(x_size,y_size)
+      joueur = randrange(0,1)
+      # Permet de nommer les joueur (par-ce que 'why not????')
+      print("Voulez vous nommer les joueur ? (OUI/NON)")
+      reponse = input()
+      if reponse == "OUI" or reponse == "oui":
+          joueurName = []
+          print("Nom du premier :")
+          joueurName += [input()]
+          print("Nom du second :")
+          joueurName += [input()]
+      else:
+          joueurName = ["1","2"]
+      while Contient(grid):
+          x = ""
+          y = ""
+          while possible(x,y,grid):
+              MontreJeu(grid)
+              if x != "" and y != "":
+                  print("mauvaise entree")
+              print("joueur: " + joueurName[joueur])
+              x = input("Quelle valeur de x? ")
+              y = input("Quelle valeur de y? ")
+          x = int(x)
+          y = int(y)
+          grid = Remplace(x,y,grid)
+          joueur = 1 - joueur
+      MontreJeu(grid)
+      print(joueurName[joueur] + " a gagne la partie")
+
+
+
+  def MainGame():
+      """
+      permet de jouer au jeu en choisissant son mode (ex joueur vs IA)
+      utilise Game_IA() et JoueurContreJoueur()"""
+      # fait l'affichage et le jeu en lui meme
+      mode = "start"
+      while mode != "stop":
+          print("Choisissez:")
+          print("1: joueur contre IA")
+          print("2: joueur contre joueur")
+          mode = input()
+          x = ""
+          y = ""
+          while VerifInput(x,30) or VerifInput(y,30):
+              if x != "" and y != "":
+                  print("Mauvaise entree !!")
+              # Fait en sorte d'avoir un plateau de taille variee
+              print("Choisissez la largeur de votre plateau (max: 30)")
+              x = input()
+              print("Choisissez la hauteur de votre plateau (max: 30)")
+              y = input()
+
+          if mode == "1":
+              Game_IA(int(x),int(y))
+          else:
+              JoueurContreJoueur(int(x),int(y))
+          print("Appuyez sur entre pour recommencer")
+          mode = input()
+
+  print("Pour commencer a jouer entrez 'MainGame()' dans la console")
+</script>
