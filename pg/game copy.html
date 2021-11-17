@@ -1,0 +1,2724 @@
+<!DOCTYPE html>
+
+
+<html lang="en" dir="ltr">
+<head>
+  <link rel="stylesheet" href="../css/master.css">
+  <link rel="stylesheet" href="../css/game.css">
+  <meta charset="utf-8">
+  <link rel="shortcut icon" type="image/x-icon" href="../img/favicon.ico" />
+  <script type="text/javascript">
+        msg = " - ";
+        msg = " Chocolate game! " + msg;position = 0;
+        function scrolltitle() {
+            document.title = msg.substring(position, msg.length) + msg.substring(0, position); position++;
+            if (position > msg.length) position = 0
+            window.setTimeout("scrolltitle()", 400);
+        }
+    scrolltitle();
+        </script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js" type="text/javascript"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/1.9.2/TweenMax.min.js" type="text/javascript"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.3/modernizr.min.js" type="text/javascript"></script>
+  <script type="text/javascript" src="../js/brython.js"></script>
+  <script type="text/javascript" src="../js/brython_stdlib.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.8.0/gsap.min.js"></script>
+</head>
+
+<body class="rectangleSoft">
+  <canvas id="myCanvas" width="1000" height="600">
+  </canvas>
+  <div>
+    <h2 class="superShadow2"> Chocolat(e) ! </h2>
+    </div>
+  <div>
+    <hr></hr>
+  </div>
+  <div class="v1">
+    </div>
+  <gName class="superShadow2"> Players: </gName>
+  <div class="Player">
+    <img src="../img/player.png" alt="Player">
+    <t> P1 </t>
+  </div>
+  <div class="AI">
+    <img src="../img/AI.png" alt="AI">
+    <t1> AI </t1>
+  </div>
+  <div>
+    <div id="rectangleText">
+      Grid settings (max for both is 10 !):
+      </div>
+    <div id="rectangle">
+      </div>
+  </div>
+<div>
+  <form name='grid' id="grid">
+    Desired Length: <input type='number' name='length' min=1 max=10 step=1 value=1 />
+    Desired Height: <input type='number' name='height' min=1 max=10 step=1 value=1/>
+    <input type='button' value='Submit' />
+  </form>
+</div>
+<div id='choc'></div>
+  <template>
+    <img src="../img/chocci.png" >
+  </template>
+  <script type="text/javascript">
+    const d=document;
+    const q=(e,n=d)=>n.querySelector(e);
+    const form=d.forms.grid;
+
+
+    document.querySelector('[type="button"]').addEventListener('click', (e) => {
+      let choc = q('#choc');
+        choc.innerHTML='';
+
+      if( form.height.value>10 )form.height.value=10;
+      if( form.length.value>10 )form.length.value=10;
+
+      for( let y=0; y < form.height.value; y++ ){
+
+        let div=d.createElement('div');
+        choc.appendChild( div );
+
+        for( let x=0; x < form.length.value; x++ ){
+          div.appendChild( q('img', q('template').content).cloneNode(true) )
+}
+}
+});
+    </script>
+
+    <!-- <form id="grid">
+      Desired Height: <input type="text" id="height">
+      Desired Length: <input type="text" id="length">
+      <input type="button" value="Submit" id="submit">
+      </form> -->
+    <!-- <script>
+      function changeSize(){
+        document.getElementById("submit").submit();
+      }
+      </script> -->
+
+    <!-- <div id="choc"> -->
+      <!-- <script type="text/javascript">
+        const d=document;
+        const q=(e,n=d)=>n.querySelector(e);
+        const form=d.forms.grid;
+
+
+
+        document.querySelector('[type="button"]').addEventListener('click', (e) => {
+          let choc = q('#choc');
+            choc.innerHTML='';
+
+          if( form.height.value>10 )form.height.value=10;
+          if( form.length.value>10 )form.length.value=10;
+
+          for( let y=0; y < form.height.value; y++ ){
+
+            let div=d.createElement('div');
+            choc.appendChild( div );
+
+            for( let x=0; x < form.length.value; x++ ){
+              div.appendChild( q('img', q('template').content).cloneNode(true) )
+  }
+  }
+});
+        </script> -->
+  <!-- <script type="text/javascript">
+
+      function imgRep(){
+          x = document.getElementById("length").value;
+          y = document.getElementById("height").value;
+          var button = document.getElementById("submit");
+          for (var i = 0; x*y; i++) {
+  $("#choc").append($(".choc").last().clone(true));
+}
+          }
+
+      var button = document.getElementById("submit"),
+      x = button.form.length.value;
+      y = button.form.height.value;
+      if (x > 10 || y > 10){
+        alert("Please choose a valid value ranging from 1 to 10 for the size!")
+      }
+      button.onclick = function() {
+    imgRep();
+      }
+</script> -->
+<!---
+TO USE FOR CHOCOLATE PATTERN REPETTION, LOOK FUNC: BACKGROUND-REPEAT;
+.five-star-line { height: 20px; background-image: url(img/5-star-rating.png); background-repeat: repeat-x; background-position: center; background-color: transparent; border: none; width: 50%; margin: auto; margin-top: 5%; margin-bottom: 5%; }
+--->
+
+</body>
+
+
+
+
+
+<!---
+Brython game starts here
+--->
+
+
+
+
+<script type="text/javascript">
+var $module = (function($B){
+var $B = __BRYTHON__,
+    _b_ = __BRYTHON__.builtins,
+    $locals = $locals_game;
+
+$locals_game.__package__ = ""
+$locals.__annotations__ = $B.empty_dict()
+var $top_frame = ["game", $locals_game, "game", $locals_game]
+$locals.$f_trace = $B.enter_frame($top_frame)
+var $stack_length = $B.frames_stack.length;
+try{
+  ;$locals.$line_info = "1,game";if($locals.$f_trace !== _b_.None){$B.trace_line()};_b_.None;
+  var module = $B.$import("copy",["deepcopy"], {}, {}, true);
+  $locals["deepcopy"] = $B.$getattr($B.imported["copy"], "deepcopy");
+  _b_.None;;
+  ;$locals.$line_info = "2,game";if($locals.$f_trace !== _b_.None){$B.trace_line()};_b_.None;
+  var module = $B.$import("random",["randrange"], {}, {}, true);
+  $locals["randrange"] = $B.$getattr($B.imported["random"], "randrange");
+  _b_.None;;
+  ;$locals.$line_info = "3,game";if($locals.$f_trace !== _b_.None){$B.trace_line()};_b_.None;
+  var module = $B.$import("math",["floor"], {}, {}, true);
+  $locals["floor"] = $B.$getattr($B.imported["math"], "floor");
+  _b_.None;;
+  ;$locals.$line_info = "4,game";if($locals.$f_trace !== _b_.None){$B.trace_line()};_b_.None;
+  var module = $B.$import("time",["*"], {}, {}, true);
+  $B.import_all($locals, module);
+  _b_.None;;
+  ;$locals.$line_info = "24,game";if($locals.$f_trace !== _b_.None){$B.trace_line()};_b_.None;
+  var ResetGrid$1 = function($defaults){
+    function ResetGrid1(_x_size, _y_size){
+      var $locals_game_ResetGrid_1 = {},
+          $locals = $locals_game_ResetGrid_1;
+      var $len = arguments.length;
+      var last_arg;if($len > 0 && ((last_arg = arguments[$len - 1]) !== undefined) && last_arg.$nat !== undefined){
+        $locals_game_ResetGrid_1 = $locals = $B.args("ResetGrid", 2, {"x_size":null, "y_size":null}, ["x_size", "y_size"], arguments, $defaults, null, null);
+      }else{
+        if($len == 2){
+          $locals_game_ResetGrid_1 = $locals = $B.conv_undef({"x_size": _x_size, "y_size": _y_size})
+        }else if($len > 2){
+          $B.wrong_nb_args("ResetGrid", $len, 2, ["x_size","y_size"])
+        }else if($len + Object.keys($defaults).length < 2){
+          $B.wrong_nb_args("ResetGrid", $len, 2, ["x_size","y_size"])
+        }else{
+          $locals_game_ResetGrid_1 = $locals = $B.conv_undef({"x_size": _x_size, "y_size": _y_size})
+          var defparams = ["x_size","y_size"]
+          for(var i = $len; i < defparams.length; i++){
+            $locals[defparams[i]] = $defaults[defparams[i]]
+          }
+        }
+      }
+      $locals.$line_info = "24,game"
+      var $top_frame = ["game_ResetGrid_1", $locals,"game", $locals_game, ResetGrid1]
+      $locals.$f_trace = $B.enter_frame($top_frame)
+      var $stack_length = $B.frames_stack.length;
+      try{
+        $B.js_this = this;
+        ;$locals.$line_info = "25,game";if($locals.$f_trace !== _b_.None){$B.trace_line()};_b_.None;
+        $B.String("\n\
+    f( int , int ) -> list\n\
+    retourne la liste pour la partie avec la taille voulut");
+        ;$locals.$line_info = "30,game";if($locals.$f_trace !== _b_.None){$B.trace_line()};_b_.None;
+        $locals_game_ResetGrid_1["gridReset"] = $B.$list([]);
+        ;$locals.$line_info = "31,game";if($locals.$f_trace !== _b_.None){$B.trace_line()};_b_.None;
+        var $no_break2 = true
+        var $next_func_17 = $B.next_of($B.$call($B.$global_search("range", ["game_ResetGrid_1", "game"]))($B.$check_def_local("y_size",$locals["y_size"])))
+        while(true){
+          try{
+            var $next_17 = $next_func_17()
+          }catch(err){
+            if($B.is_exc(err, [_b_.StopIteration])){
+              break
+            }else{
+              $B.leave_frame({$locals, value: _b_.None});throw err
+            }
+          }
+          $locals_game_ResetGrid_1["i"] = $next_17
+
+          ;$locals.$line_info = "32,game";if($locals.$f_trace !== _b_.None){$B.trace_line()};_b_.None;
+
+          $locals_game_ResetGrid_1["x_liste"] = $B.$list([]);
+
+          ;$locals.$line_info = "33,game";if($locals.$f_trace !== _b_.None){$B.trace_line()};_b_.None;
+
+          var $no_break3 = true
+          var $next_func_18 = $B.next_of($B.$call($B.$global_search("range", ["game_ResetGrid_1", "game"]))($B.$check_def_local("x_size",$locals["x_size"])))
+          while(true){
+            try{
+              var $next_18 = $next_func_18()
+            }catch(err){
+              if($B.is_exc(err, [_b_.StopIteration])){
+                break
+              }else{
+                $B.leave_frame({$locals, value: _b_.None});throw err
+              }
+            }
+            $locals_game_ResetGrid_1["j"] = $next_18
+
+            ;$locals.$line_info = "34,game";if($locals.$f_trace !== _b_.None){$B.trace_line()};_b_.None;
+
+            var $temp,$left;
+
+            if($locals["x_liste"] === undefined){
+              throw $B.name_error('x_liste')
+            }
+
+            $temp = $B.$list([1]);
+
+            $left = $locals_game_ResetGrid_1["x_liste"]
+
+            if(typeof $temp.valueOf() == "number" && $left.constructor === Number && Number.isSafeInteger($left+$temp)){
+              (typeof $temp == "number" && typeof $left == "number") ? $locals_game_ResetGrid_1["x_liste"]+=$temp : $locals_game_ResetGrid_1["x_liste"] = new Number($left+$temp.valueOf())
+            }
+
+            else if(typeof $left == "string" && typeof $temp == "string"){
+              $locals_game_ResetGrid_1["x_liste"] = $left + $temp
+            }
+
+            else{
+              var iadd = $B.$getattr($locals["x_liste"],"__iadd__", null)
+              if(iadd === null){
+                ;$locals.$line_info = "34,game";if($locals.$f_trace !== _b_.None){$B.trace_line()};_b_.None;
+                $locals_game_ResetGrid_1["x_liste"] = $B.add($locals_game_ResetGrid_1["x_liste"], $temp);
+              }else{
+                ;$locals.$line_info = "34,game";if($locals.$f_trace !== _b_.None){$B.trace_line()};_b_.None;
+                $locals_game_ResetGrid_1["x_liste"] = iadd($temp)
+                ;
+              }
+            }
+            ;$locals.$line_info = "33,game";if($locals.$f_trace !== _b_.None){$B.trace_line()};_b_.None;
+          }
+
+
+          ;$locals.$line_info = "35,game";if($locals.$f_trace !== _b_.None){$B.trace_line()};_b_.None;
+
+          var $temp,$left;
+
+          if($locals["gridReset"] === undefined){
+            throw $B.name_error('gridReset')
+          }
+
+          $temp = $B.$list([$locals["x_liste"]]);
+
+          $left = $locals_game_ResetGrid_1["gridReset"]
+
+          if(typeof $temp.valueOf() == "number" && $left.constructor === Number && Number.isSafeInteger($left+$temp)){
+            (typeof $temp == "number" && typeof $left == "number") ? $locals_game_ResetGrid_1["gridReset"]+=$temp : $locals_game_ResetGrid_1["gridReset"] = new Number($left+$temp.valueOf())
+          }
+
+          else if(typeof $left == "string" && typeof $temp == "string"){
+            $locals_game_ResetGrid_1["gridReset"] = $left + $temp
+          }
+
+          else{
+            var iadd = $B.$getattr($locals["gridReset"],"__iadd__", null)
+            if(iadd === null){
+              ;$locals.$line_info = "35,game";if($locals.$f_trace !== _b_.None){$B.trace_line()};_b_.None;
+              $locals_game_ResetGrid_1["gridReset"] = $B.add($locals_game_ResetGrid_1["gridReset"], $temp);
+            }else{
+              ;$locals.$line_info = "35,game";if($locals.$f_trace !== _b_.None){$B.trace_line()};_b_.None;
+              $locals_game_ResetGrid_1["gridReset"] = iadd($temp)
+              ;
+            }
+          }
+          ;$locals.$line_info = "31,game";if($locals.$f_trace !== _b_.None){$B.trace_line()};_b_.None;
+        }
+
+        ;$locals.$line_info = "36,game";if($locals.$f_trace !== _b_.None){$B.trace_line()};_b_.None;
+        var $res = $locals["gridReset"];
+        if($locals.$f_trace !== _b_.None){
+          $B.trace_return($res)
+        }
+        $B.leave_frame({$locals});
+        return $res;
+      }catch(err){
+        $B.set_exc(err)
+        if((! err.$in_trace_func) && $locals.$f_trace !== _b_.None){
+          $locals.$f_trace = $B.trace_exception()
+        }
+        $B.leave_frame({$locals});throw err
+      }
+    }
+    ResetGrid1.$is_func = true
+    ResetGrid1.$infos = {
+      __name__:"ResetGrid",
+      __qualname__:"ResetGrid",
+      __defaults__ : _b_.None,
+      __kwdefaults__ : _b_.None,
+      __annotations__: {},
+      __dict__: $B.empty_dict(),
+      __doc__: $B.String("\n\
+    f( int , int ) -> list\n\
+    retourne la liste pour la partie avec la taille voulut"),
+      __module__ : "game",
+      __code__:{
+        co_argcount:2,
+        co_filename:$locals_game["__file__"] || "<string>",
+        co_firstlineno:24,
+        co_flags:67,
+        co_freevars: ["range"],
+        co_kwonlyargcount:0,
+        co_name: "ResetGrid",
+        co_nlocals: 6,
+        co_posonlyargcount: 0,
+        co_varnames: $B.fast_tuple(["x_size", "y_size", "gridReset", "i", "x_liste", "j"])
+      }
+    };_b_.None;
+    return ResetGrid1
+  }
+  $locals_game["ResetGrid"] = ResetGrid$1({})
+  $locals_game["ResetGrid"].$set_defaults = function(value){
+    return $locals_game["ResetGrid"] = ResetGrid$1(value)
+  }
+  ;$locals.$line_info = "39,game";if($locals.$f_trace !== _b_.None){$B.trace_line()};_b_.None;
+  var NombrePosition$4 = function($defaults){
+    function NombrePosition4(_gridTest){
+      var $locals_game_NombrePosition_2 = {},
+          $locals = $locals_game_NombrePosition_2;
+      var $len = arguments.length;
+      var last_arg;if($len > 0 && ((last_arg = arguments[$len - 1]) !== undefined) && last_arg.$nat !== undefined){
+        $locals_game_NombrePosition_2 = $locals = $B.args("NombrePosition", 1, {"gridTest":null}, ["gridTest"], arguments, $defaults, null, null);
+      }else{
+        if($len == 1){
+          $locals_game_NombrePosition_2 = $locals = $B.conv_undef({"gridTest": _gridTest})
+        }else if($len > 1){
+          $B.wrong_nb_args("NombrePosition", $len, 1, ["gridTest"])
+        }else if($len + Object.keys($defaults).length < 1){
+          $B.wrong_nb_args("NombrePosition", $len, 1, ["gridTest"])
+        }else{
+          $locals_game_NombrePosition_2 = $locals = $B.conv_undef({"gridTest": _gridTest})
+          var defparams = ["gridTest"]
+          for(var i = $len; i < defparams.length; i++){
+            $locals[defparams[i]] = $defaults[defparams[i]]
+          }
+        }
+      }
+      $locals.$line_info = "39,game"
+      var $top_frame = ["game_NombrePosition_2", $locals,"game", $locals_game, NombrePosition4]
+      $locals.$f_trace = $B.enter_frame($top_frame)
+      var $stack_length = $B.frames_stack.length;
+      try{
+        $B.js_this = this;
+        ;$locals.$line_info = "40,game";if($locals.$f_trace !== _b_.None){$B.trace_line()};_b_.None;
+        $B.String("\n\
+    f( list ) -> int\n\
+    retourne le nombre de 1 present dans la liste en argument");
+        ;$locals.$line_info = "43,game";if($locals.$f_trace !== _b_.None){$B.trace_line()};_b_.None;
+        $locals_game_NombrePosition_2["nombre"] = 0;
+        ;$locals.$line_info = "44,game";if($locals.$f_trace !== _b_.None){$B.trace_line()};_b_.None;
+        var $no_break5 = true
+        var $next_func_19 = $B.next_of($B.$call($B.$global_search("range", ["game_NombrePosition_2", "game"]))($B.$call(($locals_game["len"] || _b_.len))($B.$check_def_local("gridTest",$locals["gridTest"]))))
+        while(true){
+          try{
+            var $next_19 = $next_func_19()
+          }catch(err){
+            if($B.is_exc(err, [_b_.StopIteration])){
+              break
+            }else{
+              $B.leave_frame({$locals, value: _b_.None});throw err
+            }
+          }
+          $locals_game_NombrePosition_2["i"] = $next_19
+
+          ;$locals.$line_info = "45,game";if($locals.$f_trace !== _b_.None){$B.trace_line()};_b_.None;
+
+          var $no_break6 = true
+          var $next_func_20 = $B.next_of($B.$call($B.$global_search("range", ["game_NombrePosition_2", "game"]))($B.$call(($locals_game["len"] || _b_.len))($B.$getitem($B.$check_def_local("gridTest",$locals["gridTest"]),0))))
+          while(true){
+            try{
+              var $next_20 = $next_func_20()
+            }catch(err){
+              if($B.is_exc(err, [_b_.StopIteration])){
+                break
+              }else{
+                $B.leave_frame({$locals, value: _b_.None});throw err
+              }
+            }
+            $locals_game_NombrePosition_2["j"] = $next_20
+
+            ;$locals.$line_info = "47,game";if($locals.$f_trace !== _b_.None){$B.trace_line()};_b_.None;
+
+            if($B.$bool($B.rich_comp("__eq__",$B.$getitem($B.$getitem($B.$check_def_local("gridTest",$locals["gridTest"]),$B.$check_def_local("i",$locals["i"])),$B.$check_def_local("j",$locals["j"])),1))){
+              if($locals["nombre"] === undefined){
+                throw $B.name_error('nombre')
+              }
+              $left = $locals_game_NombrePosition_2["nombre"]
+              ;$locals.$line_info = "48,game";if($locals.$f_trace !== _b_.None){$B.trace_line()};_b_.None;
+              if($left.constructor === Number && Number.isSafeInteger($left+(1))){
+                (typeof $left == "number") ? $locals_game_NombrePosition_2["nombre"]+=(1) : $locals_game_NombrePosition_2["nombre"] = new Number($left+(1))
+              }else if(typeof $left == "string" && typeof $temp == "string"){
+                $locals_game_NombrePosition_2["nombre"] = $left + $temp
+              }else{
+                var iadd = $B.$getattr($locals["nombre"],"__iadd__", null)
+                if(iadd === null){
+                  ;$locals.$line_info = "48,game";if($locals.$f_trace !== _b_.None){$B.trace_line()};_b_.None;
+                  $locals_game_NombrePosition_2["nombre"] = $B.add($locals_game_NombrePosition_2["nombre"], (1));
+                }else{
+                  ;$locals.$line_info = "48,game";if($locals.$f_trace !== _b_.None){$B.trace_line()};_b_.None;
+                  $locals_game_NombrePosition_2["nombre"] = iadd((1))
+                  ;
+                }
+              }
+            }
+            ;$locals.$line_info = "45,game";if($locals.$f_trace !== _b_.None){$B.trace_line()};_b_.None;
+          }
+
+          ;$locals.$line_info = "44,game";if($locals.$f_trace !== _b_.None){$B.trace_line()};_b_.None;
+        }
+
+        ;$locals.$line_info = "49,game";if($locals.$f_trace !== _b_.None){$B.trace_line()};_b_.None;
+        var $res = $locals["nombre"];
+        if($locals.$f_trace !== _b_.None){
+          $B.trace_return($res)
+        }
+        $B.leave_frame({$locals});
+        return $res;
+      }catch(err){
+        $B.set_exc(err)
+        if((! err.$in_trace_func) && $locals.$f_trace !== _b_.None){
+          $locals.$f_trace = $B.trace_exception()
+        }
+        $B.leave_frame({$locals});throw err
+      }
+    }
+    NombrePosition4.$is_func = true
+    NombrePosition4.$infos = {
+      __name__:"NombrePosition",
+      __qualname__:"NombrePosition",
+      __defaults__ : _b_.None,
+      __kwdefaults__ : _b_.None,
+      __annotations__: {},
+      __dict__: $B.empty_dict(),
+      __doc__: $B.String("\n\
+    f( list ) -> int\n\
+    retourne le nombre de 1 present dans la liste en argument"),
+      __module__ : "game",
+      __code__:{
+        co_argcount:1,
+        co_filename:$locals_game["__file__"] || "<string>",
+        co_firstlineno:39,
+        co_flags:67,
+        co_freevars: ["range"],
+        co_kwonlyargcount:0,
+        co_name: "NombrePosition",
+        co_nlocals: 4,
+        co_posonlyargcount: 0,
+        co_varnames: $B.fast_tuple(["gridTest", "nombre", "i", "j"])
+      }
+    };_b_.None;
+    return NombrePosition4
+  }
+  $locals_game["NombrePosition"] = NombrePosition$4({})
+  $locals_game["NombrePosition"].$set_defaults = function(value){
+    return $locals_game["NombrePosition"] = NombrePosition$4(value)
+  }
+  ;$locals.$line_info = "52,game";if($locals.$f_trace !== _b_.None){$B.trace_line()};_b_.None;
+  var Remplace$7 = function($defaults){
+    function Remplace7(_x, _y, _gridModifie){
+      var $locals_game_Remplace_3 = {},
+          $locals = $locals_game_Remplace_3;
+      var $len = arguments.length;
+      var last_arg;if($len > 0 && ((last_arg = arguments[$len - 1]) !== undefined) && last_arg.$nat !== undefined){
+        $locals_game_Remplace_3 = $locals = $B.args("Remplace", 3, {"x":null, "y":null, "gridModifie":null}, ["x", "y", "gridModifie"], arguments, $defaults, null, null);
+      }else{
+        if($len == 3){
+          $locals_game_Remplace_3 = $locals = $B.conv_undef({"x": _x, "y": _y, "gridModifie": _gridModifie})
+        }else if($len > 3){
+          $B.wrong_nb_args("Remplace", $len, 3, ["x","y","gridModifie"])
+        }else if($len + Object.keys($defaults).length < 3){
+          $B.wrong_nb_args("Remplace", $len, 3, ["x","y","gridModifie"])
+        }else{
+          $locals_game_Remplace_3 = $locals = $B.conv_undef({"x": _x, "y": _y, "gridModifie": _gridModifie})
+          var defparams = ["x","y","gridModifie"]
+          for(var i = $len; i < defparams.length; i++){
+            $locals[defparams[i]] = $defaults[defparams[i]]
+          }
+        }
+      }
+      $locals.$line_info = "52,game"
+      var $top_frame = ["game_Remplace_3", $locals,"game", $locals_game, Remplace7]
+      $locals.$f_trace = $B.enter_frame($top_frame)
+      var $stack_length = $B.frames_stack.length;
+      try{
+        $B.js_this = this;
+        ;$locals.$line_info = "53,game";if($locals.$f_trace !== _b_.None){$B.trace_line()};_b_.None;
+        $B.String("\n\
+    f( int , int , list ) -> list\n\
+    retourne la liste entree en argument en lui changeant la ligne x\n\
+    (en argument)et la colonne (y en argument)");
+        ;$locals.$line_info = "58,game";if($locals.$f_trace !== _b_.None){$B.trace_line()};_b_.None;
+        $locals_game_Remplace_3["save"] = $B.$getitem($B.$check_def_local("gridModifie",$locals["gridModifie"]),($B.$check_def_local("y",$locals["y"]).valueOf && typeof $B.$check_def_local("y",$locals["y"]).valueOf() == "number" ? (typeof $B.$check_def_local("y",$locals["y"]) == "number" ? $B.sub($B.$check_def_local("y",$locals["y"]),1) : new Number($B.sub($B.$check_def_local("y",$locals["y"]),1))): $B.rich_op("sub",$B.$check_def_local("y",$locals["y"]),1)));
+        ;$locals.$line_info = "59,game";if($locals.$f_trace !== _b_.None){$B.trace_line()};_b_.None;
+        var $no_break8 = true
+        var $next_func_21 = $B.next_of($B.$call($B.$global_search("range", ["game_Remplace_3", "game"]))($B.$call(($locals_game["len"] || _b_.len))($locals["save"])))
+        while(true){
+          try{
+            var $next_21 = $next_func_21()
+          }catch(err){
+            if($B.is_exc(err, [_b_.StopIteration])){
+              break
+            }else{
+              $B.leave_frame({$locals, value: _b_.None});throw err
+            }
+          }
+          $locals_game_Remplace_3["i"] = $next_21
+
+          ;$locals.$line_info = "60,game";if($locals.$f_trace !== _b_.None){$B.trace_line()};_b_.None;
+
+          if($B.$bool($B.rich_comp("__ge__",$B.add($B.$check_def_local("i",$locals["i"]), 1),$B.$check_def_local("x",$locals["x"])))){
+            ;$locals.$line_info = "61,game";if($locals.$f_trace !== _b_.None){$B.trace_line()};_b_.None;
+            var $temp41 = $locals["save"]
+            if(Array.isArray($temp41) && !$temp41.__class__){
+              $B.set_list_key($temp41,$B.$check_def_local("i",$locals["i"]),0)
+            }else{
+              $B.$setitem($locals["save"],$B.$check_def_local("i",$locals["i"]),0)};_b_.None;;
+            }
+            ;$locals.$line_info = "59,game";if($locals.$f_trace !== _b_.None){$B.trace_line()};_b_.None;
+          }
+
+          ;$locals.$line_info = "62,game";if($locals.$f_trace !== _b_.None){$B.trace_line()};_b_.None;
+          var $temp42 = $B.$check_def_local("gridModifie",$locals["gridModifie"])
+          if(Array.isArray($temp42) && !$temp42.__class__){
+            $B.set_list_key($temp42,($B.$check_def_local("y",$locals["y"]).valueOf && typeof $B.$check_def_local("y",$locals["y"]).valueOf() == "number" ? (typeof $B.$check_def_local("y",$locals["y"]) == "number" ? $B.sub($B.$check_def_local("y",$locals["y"]),1) : new Number($B.sub($B.$check_def_local("y",$locals["y"]),1))): $B.rich_op("sub",$B.$check_def_local("y",$locals["y"]),1)),$locals["save"])
+          }else{
+            $B.$setitem($B.$check_def_local("gridModifie",$locals["gridModifie"]),($B.$check_def_local("y",$locals["y"]).valueOf && typeof $B.$check_def_local("y",$locals["y"]).valueOf() == "number" ? (typeof $B.$check_def_local("y",$locals["y"]) == "number" ? $B.sub($B.$check_def_local("y",$locals["y"]),1) : new Number($B.sub($B.$check_def_local("y",$locals["y"]),1))): $B.rich_op("sub",$B.$check_def_local("y",$locals["y"]),1)),$locals["save"])};_b_.None;;
+            ;$locals.$line_info = "65,game";if($locals.$f_trace !== _b_.None){$B.trace_line()};_b_.None;
+            var $no_break9 = true
+            var $next_func_22 = $B.next_of($B.$call($B.$global_search("range", ["game_Remplace_3", "game"]))($B.$check_def_local("y",$locals["y"])))
+            while(true){
+              try{
+                var $next_22 = $next_func_22()
+              }catch(err){
+                if($B.is_exc(err, [_b_.StopIteration])){
+                  break
+                }else{
+                  $B.leave_frame({$locals, value: _b_.None});throw err
+                }
+              }
+              $locals_game_Remplace_3["i"] = $next_22
+
+              ;$locals.$line_info = "66,game";if($locals.$f_trace !== _b_.None){$B.trace_line()};_b_.None;
+
+              $locals_game_Remplace_3["save"] = $B.$getitem($B.$check_def_local("gridModifie",$locals["gridModifie"]),$B.$check_def_local("i",$locals["i"]));
+
+              ;$locals.$line_info = "67,game";if($locals.$f_trace !== _b_.None){$B.trace_line()};_b_.None;
+
+              var $temp43 = $locals["save"]
+              if(Array.isArray($temp43) && !$temp43.__class__){
+                $B.set_list_key($temp43,($B.$check_def_local("x",$locals["x"]).valueOf && typeof $B.$check_def_local("x",$locals["x"]).valueOf() == "number" ? (typeof $B.$check_def_local("x",$locals["x"]) == "number" ? $B.sub($B.$check_def_local("x",$locals["x"]),1) : new Number($B.sub($B.$check_def_local("x",$locals["x"]),1))): $B.rich_op("sub",$B.$check_def_local("x",$locals["x"]),1)),0)
+              }else{
+                $B.$setitem($locals["save"],($B.$check_def_local("x",$locals["x"]).valueOf && typeof $B.$check_def_local("x",$locals["x"]).valueOf() == "number" ? (typeof $B.$check_def_local("x",$locals["x"]) == "number" ? $B.sub($B.$check_def_local("x",$locals["x"]),1) : new Number($B.sub($B.$check_def_local("x",$locals["x"]),1))): $B.rich_op("sub",$B.$check_def_local("x",$locals["x"]),1)),0)};_b_.None;;
+
+                ;$locals.$line_info = "68,game";if($locals.$f_trace !== _b_.None){$B.trace_line()};_b_.None;
+
+                var $temp44 = $B.$check_def_local("gridModifie",$locals["gridModifie"])
+                if(Array.isArray($temp44) && !$temp44.__class__){
+                  $B.set_list_key($temp44,$B.$check_def_local("i",$locals["i"]),$locals["save"])
+                }else{
+                  $B.$setitem($B.$check_def_local("gridModifie",$locals["gridModifie"]),$B.$check_def_local("i",$locals["i"]),$locals["save"])};_b_.None;;
+                  ;$locals.$line_info = "65,game";if($locals.$f_trace !== _b_.None){$B.trace_line()};_b_.None;
+                }
+
+                ;$locals.$line_info = "69,game";if($locals.$f_trace !== _b_.None){$B.trace_line()};_b_.None;
+                var $res = $B.$check_def_local("gridModifie",$locals["gridModifie"]);
+                if($locals.$f_trace !== _b_.None){
+                  $B.trace_return($res)
+                }
+                $B.leave_frame({$locals});
+                return $res;
+              }catch(err){
+                $B.set_exc(err)
+                if((! err.$in_trace_func) && $locals.$f_trace !== _b_.None){
+                  $locals.$f_trace = $B.trace_exception()
+                }
+                $B.leave_frame({$locals});throw err
+              }
+            }
+            Remplace7.$is_func = true
+            Remplace7.$infos = {
+              __name__:"Remplace",
+              __qualname__:"Remplace",
+              __defaults__ : _b_.None,
+              __kwdefaults__ : _b_.None,
+              __annotations__: {},
+              __dict__: $B.empty_dict(),
+              __doc__: $B.String("\n\
+    f( int , int , list ) -> list\n\
+    retourne la liste entree en argument en lui changeant la ligne x\n\
+    (en argument)et la colonne (y en argument)"),
+              __module__ : "game",
+              __code__:{
+                co_argcount:3,
+                co_filename:$locals_game["__file__"] || "<string>",
+                co_firstlineno:52,
+                co_flags:67,
+                co_freevars: ["range"],
+                co_kwonlyargcount:0,
+                co_name: "Remplace",
+                co_nlocals: 5,
+                co_posonlyargcount: 0,
+                co_varnames: $B.fast_tuple(["x", "y", "gridModifie", "save", "i"])
+              }
+            };_b_.None;
+            return Remplace7
+          }
+          $locals_game["Remplace"] = Remplace$7({})
+          $locals_game["Remplace"].$set_defaults = function(value){
+            return $locals_game["Remplace"] = Remplace$7(value)
+          }
+          ;$locals.$line_info = "72,game";if($locals.$f_trace !== _b_.None){$B.trace_line()};_b_.None;
+          var Contient$10 = function($defaults){
+            function Contient10(_gridTest){
+              var $locals_game_Contient_4 = {},
+                  $locals = $locals_game_Contient_4;
+              var $len = arguments.length;
+              var last_arg;if($len > 0 && ((last_arg = arguments[$len - 1]) !== undefined) && last_arg.$nat !== undefined){
+                $locals_game_Contient_4 = $locals = $B.args("Contient", 1, {"gridTest":null}, ["gridTest"], arguments, $defaults, null, null);
+              }else{
+                if($len == 1){
+                  $locals_game_Contient_4 = $locals = $B.conv_undef({"gridTest": _gridTest})
+                }else if($len > 1){
+                  $B.wrong_nb_args("Contient", $len, 1, ["gridTest"])
+                }else if($len + Object.keys($defaults).length < 1){
+                  $B.wrong_nb_args("Contient", $len, 1, ["gridTest"])
+                }else{
+                  $locals_game_Contient_4 = $locals = $B.conv_undef({"gridTest": _gridTest})
+                  var defparams = ["gridTest"]
+                  for(var i = $len; i < defparams.length; i++){
+                    $locals[defparams[i]] = $defaults[defparams[i]]
+                  }
+                }
+              }
+              $locals.$line_info = "72,game"
+              var $top_frame = ["game_Contient_4", $locals,"game", $locals_game, Contient10]
+              $locals.$f_trace = $B.enter_frame($top_frame)
+              var $stack_length = $B.frames_stack.length;
+              try{
+                $B.js_this = this;
+                ;$locals.$line_info = "73,game";if($locals.$f_trace !== _b_.None){$B.trace_line()};_b_.None;
+                $B.String("\n\
+    f( list ) -> bool\n\
+    retourne True si la liste en argument contient 1 et False sinon");
+                ;$locals.$line_info = "78,game";if($locals.$f_trace !== _b_.None){$B.trace_line()};_b_.None;
+                if($B.$bool($B.rich_comp("__eq__",$B.$call($locals_game["NombrePosition"])($B.$check_def_local("gridTest",$locals["gridTest"])),0))){
+                  ;$locals.$line_info = "79,game";if($locals.$f_trace !== _b_.None){$B.trace_line()};_b_.None;
+                  var $res = ($locals_game["False"] || _b_.False);
+                  if($locals.$f_trace !== _b_.None){
+                    $B.trace_return($res)
+                  }
+                  $B.leave_frame({$locals});
+                  return $res;
+                }
+                ;$locals.$line_info = "80,game";if($locals.$f_trace !== _b_.None){$B.trace_line()};_b_.None;
+                var $res = ($locals_game["True"] || _b_.True);
+                if($locals.$f_trace !== _b_.None){
+                  $B.trace_return($res)
+                }
+                $B.leave_frame({$locals});
+                return $res;
+              }catch(err){
+                $B.set_exc(err)
+                if((! err.$in_trace_func) && $locals.$f_trace !== _b_.None){
+                  $locals.$f_trace = $B.trace_exception()
+                }
+                $B.leave_frame({$locals});throw err
+              }
+            }
+            Contient10.$is_func = true
+            Contient10.$infos = {
+              __name__:"Contient",
+              __qualname__:"Contient",
+              __defaults__ : _b_.None,
+              __kwdefaults__ : _b_.None,
+              __annotations__: {},
+              __dict__: $B.empty_dict(),
+              __doc__: $B.String("\n\
+    f( list ) -> bool\n\
+    retourne True si la liste en argument contient 1 et False sinon"),
+              __module__ : "game",
+              __code__:{
+                co_argcount:1,
+                co_filename:$locals_game["__file__"] || "<string>",
+                co_firstlineno:72,
+                co_flags:67,
+                co_freevars: ["NombrePosition","False"],
+                co_kwonlyargcount:0,
+                co_name: "Contient",
+                co_nlocals: 1,
+                co_posonlyargcount: 0,
+                co_varnames: $B.fast_tuple(["gridTest"])
+              }
+            };_b_.None;
+            return Contient10
+          }
+          $locals_game["Contient"] = Contient$10({})
+          $locals_game["Contient"].$set_defaults = function(value){
+            return $locals_game["Contient"] = Contient$10(value)
+          }
+          ;$locals.$line_info = "83,game";if($locals.$f_trace !== _b_.None){$B.trace_line()};_b_.None;
+          var possible$11 = function($defaults){
+            function possible11(_x, _y, _grid){
+              var $locals_game_possible_5 = {},
+                  $locals = $locals_game_possible_5;
+              var $len = arguments.length;
+              var last_arg;if($len > 0 && ((last_arg = arguments[$len - 1]) !== undefined) && last_arg.$nat !== undefined){
+                $locals_game_possible_5 = $locals = $B.args("possible", 3, {"x":null, "y":null, "grid":null}, ["x", "y", "grid"], arguments, $defaults, null, null);
+              }else{
+                if($len == 3){
+                  $locals_game_possible_5 = $locals = $B.conv_undef({"x": _x, "y": _y, "grid": _grid})
+                }else if($len > 3){
+                  $B.wrong_nb_args("possible", $len, 3, ["x","y","grid"])
+                }else if($len + Object.keys($defaults).length < 3){
+                  $B.wrong_nb_args("possible", $len, 3, ["x","y","grid"])
+                }else{
+                  $locals_game_possible_5 = $locals = $B.conv_undef({"x": _x, "y": _y, "grid": _grid})
+                  var defparams = ["x","y","grid"]
+                  for(var i = $len; i < defparams.length; i++){
+                    $locals[defparams[i]] = $defaults[defparams[i]]
+                  }
+                }
+              }
+              $locals.$line_info = "83,game"
+              var $top_frame = ["game_possible_5", $locals,"game", $locals_game, possible11]
+              $locals.$f_trace = $B.enter_frame($top_frame)
+              var $stack_length = $B.frames_stack.length;
+              try{
+                $B.js_this = this;
+                ;$locals.$line_info = "84,game";if($locals.$f_trace !== _b_.None){$B.trace_line()};_b_.None;
+                $B.String("\n\
+    f( str, str , list ) -> bool\n\
+    retourne False si la position x;y (entre en argument) est  un 1\n\
+    utilise VerifInput( str , int )");
+                ;$locals.$line_info = "89,game";if($locals.$f_trace !== _b_.None){$B.trace_line()};_b_.None;
+                if($B.$bool($B.$test_expr($B.$test_item($B.$call($B.$check_def("VerifInput",$locals_game["VerifInput"]))($B.$check_def_local("x",$locals["x"]), $B.$call(($locals_game["len"] || _b_.len))($B.$getitem($B.$check_def_local("grid",$locals["grid"]),0))))||$B.$test_item($B.$call($B.$check_def("VerifInput",$locals_game["VerifInput"]))($B.$check_def_local("y",$locals["y"]), $B.$call(($locals_game["len"] || _b_.len))($B.$check_def_local("grid",$locals["grid"]))))))){
+                  ;$locals.$line_info = "90,game";if($locals.$f_trace !== _b_.None){$B.trace_line()};_b_.None;
+                  var $res = ($locals_game["True"] || _b_.True);
+                  if($locals.$f_trace !== _b_.None){
+                    $B.trace_return($res)
+                  }
+                  $B.leave_frame({$locals});
+                  return $res;
+                }
+                ;$locals.$line_info = "92,game";if($locals.$f_trace !== _b_.None){$B.trace_line()};_b_.None;
+                $locals_game_possible_5["x"] = $B.$call(($locals_game["int"] || _b_.int))($B.$check_def_local("x",$locals["x"]));
+                ;$locals.$line_info = "93,game";if($locals.$f_trace !== _b_.None){$B.trace_line()};_b_.None;
+                $locals_game_possible_5["y"] = $B.$call(($locals_game["int"] || _b_.int))($B.$check_def_local("y",$locals["y"]));
+                ;$locals.$line_info = "94,game";if($locals.$f_trace !== _b_.None){$B.trace_line()};_b_.None;
+                if($B.$bool($B.rich_comp("__eq__",$B.$getitem($B.$getitem($B.$check_def_local("grid",$locals["grid"]),($locals["y"].valueOf && typeof $locals["y"].valueOf() == "number" ? (typeof $locals["y"] == "number" ? $B.sub($locals["y"],1) : new Number($B.sub($locals["y"],1))): $B.rich_op("sub",$locals["y"],1))),($locals["x"].valueOf && typeof $locals["x"].valueOf() == "number" ? (typeof $locals["x"] == "number" ? $B.sub($locals["x"],1) : new Number($B.sub($locals["x"],1))): $B.rich_op("sub",$locals["x"],1))),1))){
+                  ;$locals.$line_info = "95,game";if($locals.$f_trace !== _b_.None){$B.trace_line()};_b_.None;
+                  var $res = ($locals_game["False"] || _b_.False);
+                  if($locals.$f_trace !== _b_.None){
+                    $B.trace_return($res)
+                  }
+                  $B.leave_frame({$locals});
+                  return $res;
+                }
+                ;$locals.$line_info = "96,game";if($locals.$f_trace !== _b_.None){$B.trace_line()};_b_.None;
+                var $res = ($locals_game["True"] || _b_.True);
+                if($locals.$f_trace !== _b_.None){
+                  $B.trace_return($res)
+                }
+                $B.leave_frame({$locals});
+                return $res;
+              }catch(err){
+                $B.set_exc(err)
+                if((! err.$in_trace_func) && $locals.$f_trace !== _b_.None){
+                  $locals.$f_trace = $B.trace_exception()
+                }
+                $B.leave_frame({$locals});throw err
+              }
+            }
+            possible11.$is_func = true
+            possible11.$infos = {
+              __name__:"possible",
+              __qualname__:"possible",
+              __defaults__ : _b_.None,
+              __kwdefaults__ : _b_.None,
+              __annotations__: {},
+              __dict__: $B.empty_dict(),
+              __doc__: $B.String("\n\
+    f( str, str , list ) -> bool\n\
+    retourne False si la position x;y (entre en argument) est  un 1\n\
+    utilise VerifInput( str , int )"),
+              __module__ : "game",
+              __code__:{
+                co_argcount:3,
+                co_filename:$locals_game["__file__"] || "<string>",
+                co_firstlineno:83,
+                co_flags:67,
+                co_freevars: ["VerifInput","False"],
+                co_kwonlyargcount:0,
+                co_name: "possible",
+                co_nlocals: 3,
+                co_posonlyargcount: 0,
+                co_varnames: $B.fast_tuple(["x", "y", "grid"])
+              }
+            };_b_.None;
+            return possible11
+          }
+          $locals_game["possible"] = possible$11({})
+          $locals_game["possible"].$set_defaults = function(value){
+            return $locals_game["possible"] = possible$11(value)
+          }
+          ;$locals.$line_info = "99,game";if($locals.$f_trace !== _b_.None){$B.trace_line()};_b_.None;
+          var VerifInput$12 = function($defaults){
+            function VerifInput12(_char, _maxi){
+              var $locals_game_VerifInput_6 = {},
+                  $locals = $locals_game_VerifInput_6;
+              var $len = arguments.length;
+              var last_arg;if($len > 0 && ((last_arg = arguments[$len - 1]) !== undefined) && last_arg.$nat !== undefined){
+                $locals_game_VerifInput_6 = $locals = $B.args("VerifInput", 2, {"char":null, "maxi":null}, ["char", "maxi"], arguments, $defaults, null, null);
+              }else{
+                if($len == 2){
+                  $locals_game_VerifInput_6 = $locals = $B.conv_undef({"char": _char, "maxi": _maxi})
+                }else if($len > 2){
+                  $B.wrong_nb_args("VerifInput", $len, 2, ["char","maxi"])
+                }else if($len + Object.keys($defaults).length < 2){
+                  $B.wrong_nb_args("VerifInput", $len, 2, ["char","maxi"])
+                }else{
+                  $locals_game_VerifInput_6 = $locals = $B.conv_undef({"char": _char, "maxi": _maxi})
+                  var defparams = ["char","maxi"]
+                  for(var i = $len; i < defparams.length; i++){
+                    $locals[defparams[i]] = $defaults[defparams[i]]
+                  }
+                }
+              }
+              $locals.$line_info = "99,game"
+              var $top_frame = ["game_VerifInput_6", $locals,"game", $locals_game, VerifInput12]
+              $locals.$f_trace = $B.enter_frame($top_frame)
+              var $stack_length = $B.frames_stack.length;
+              try{
+                $B.js_this = this;
+                ;$locals.$line_info = "100,game";if($locals.$f_trace !== _b_.None){$B.trace_line()};_b_.None;
+                $B.String("\n\
+    f( str , int ) -> bool\n\
+    retourne False si une chaine de caractere est valide et True sinon\n\
+    (c'est pour l'entre de l'utilisateur)");
+                ;$locals.$line_info = "106,game";if($locals.$f_trace !== _b_.None){$B.trace_line()};_b_.None;
+                if($B.$bool((typeof $B.$check_def_local("char",$locals["char"]) == "string" ? $B.$check_def_local("char",$locals["char"])==$B.String("") : $B.rich_comp("__eq__",$B.$check_def_local("char",$locals["char"]),$B.String(""))))){
+                  ;$locals.$line_info = "107,game";if($locals.$f_trace !== _b_.None){$B.trace_line()};_b_.None;
+                  var $res = ($locals_game["True"] || _b_.True);
+                  if($locals.$f_trace !== _b_.None){
+                    $B.trace_return($res)
+                  }
+                  $B.leave_frame({$locals});
+                  return $res;
+                }
+                ;$locals.$line_info = "108,game";if($locals.$f_trace !== _b_.None){$B.trace_line()};_b_.None;
+                if($B.$bool($B.rich_comp("__ne__",$B.$call(($locals_game["type"] || _b_.type))($B.$check_def_local("char",$locals["char"])),($locals_game["str"] || _b_.str)))){
+                  ;$locals.$line_info = "109,game";if($locals.$f_trace !== _b_.None){$B.trace_line()};_b_.None;
+                  var $res = ($locals_game["True"] || _b_.True);
+                  if($locals.$f_trace !== _b_.None){
+                    $B.trace_return($res)
+                  }
+                  $B.leave_frame({$locals});
+                  return $res;
+                }
+                ;$locals.$line_info = "111,game";if($locals.$f_trace !== _b_.None){$B.trace_line()};_b_.None;
+                $locals_game_VerifInput_6["charPossible"] = $B.$list([$B.String("1"),$B.String("2"),$B.String("3"),$B.String("4"),$B.String("5"),$B.String("6"),$B.String("7"),$B.String("8"),$B.String("9"),$B.String("0")]);
+                ;$locals.$line_info = "112,game";if($locals.$f_trace !== _b_.None){$B.trace_line()};_b_.None;
+                var $no_break13 = true
+                var $next_func_23 = $B.next_of($B.$check_def_local("char",$locals["char"]))
+                while(true){
+                  try{
+                    var $next_23 = $next_func_23()
+                  }catch(err){
+                    if($B.is_exc(err, [_b_.StopIteration])){
+                      break
+                    }else{
+                      $B.leave_frame({$locals, value: _b_.None});throw err
+                    }
+                  }
+                  $locals_game_VerifInput_6["i"] = $next_23
+
+                  ;$locals.$line_info = "113,game";if($locals.$f_trace !== _b_.None){$B.trace_line()};_b_.None;
+
+                  $locals_game_VerifInput_6["valid"] = ($locals_game["False"] || _b_.False);
+
+                  ;$locals.$line_info = "114,game";if($locals.$f_trace !== _b_.None){$B.trace_line()};_b_.None;
+
+                  var $no_break14 = true
+                  var $next_func_24 = $B.next_of($locals["charPossible"])
+                  while(true){
+                    try{
+                      var $next_24 = $next_func_24()
+                    }catch(err){
+                      if($B.is_exc(err, [_b_.StopIteration])){
+                        break
+                      }else{
+                        $B.leave_frame({$locals, value: _b_.None});throw err
+                      }
+                    }
+                    $locals_game_VerifInput_6["j"] = $next_24
+
+                    ;$locals.$line_info = "115,game";if($locals.$f_trace !== _b_.None){$B.trace_line()};_b_.None;
+
+                    if($B.$bool(typeof $B.$check_def_local("j",$locals["j"])!="object" && typeof $B.$check_def_local("j",$locals["j"])!="function" && typeof $B.$check_def_local("j",$locals["j"]) == typeof $B.$check_def_local("i",$locals["i"]) ? $B.$check_def_local("j",$locals["j"])==$B.$check_def_local("i",$locals["i"]) : $B.rich_comp("__eq__",$B.$check_def_local("j",$locals["j"]),$B.$check_def_local("i",$locals["i"])))){
+                      ;$locals.$line_info = "116,game";if($locals.$f_trace !== _b_.None){$B.trace_line()};_b_.None;
+                      $locals_game_VerifInput_6["valid"] = ($locals_game["True"] || _b_.True);
+                    }
+                    ;$locals.$line_info = "114,game";if($locals.$f_trace !== _b_.None){$B.trace_line()};_b_.None;
+                  }
+
+
+                  ;$locals.$line_info = "117,game";if($locals.$f_trace !== _b_.None){$B.trace_line()};_b_.None;
+
+                  if($B.$bool(typeof $locals["valid"]!="object" && typeof $locals["valid"]!="function" && typeof $locals["valid"] == typeof ($locals_game["False"] || _b_.False) ? $locals["valid"]==($locals_game["False"] || _b_.False) : $B.rich_comp("__eq__",$locals["valid"],($locals_game["False"] || _b_.False)))){
+                    ;$locals.$line_info = "118,game";if($locals.$f_trace !== _b_.None){$B.trace_line()};_b_.None;
+                    var $res = ($locals_game["True"] || _b_.True);
+                    if($locals.$f_trace !== _b_.None){
+                      $B.trace_return($res)
+                    }
+                    $B.leave_frame({$locals});
+                    return $res;
+                  }
+                  ;$locals.$line_info = "112,game";if($locals.$f_trace !== _b_.None){$B.trace_line()};_b_.None;
+                }
+
+                ;$locals.$line_info = "121,game";if($locals.$f_trace !== _b_.None){$B.trace_line()};_b_.None;
+                if($B.$bool((typeof $B.$check_def_local("char",$locals["char"]) == "string" ? $B.$check_def_local("char",$locals["char"])==$B.String("0") : $B.rich_comp("__eq__",$B.$check_def_local("char",$locals["char"]),$B.String("0"))))){
+                  ;$locals.$line_info = "122,game";if($locals.$f_trace !== _b_.None){$B.trace_line()};_b_.None;
+                  var $res = ($locals_game["True"] || _b_.True);
+                  if($locals.$f_trace !== _b_.None){
+                    $B.trace_return($res)
+                  }
+                  $B.leave_frame({$locals});
+                  return $res;
+                }
+                ;$locals.$line_info = "124,game";if($locals.$f_trace !== _b_.None){$B.trace_line()};_b_.None;
+                if($B.$bool($B.rich_comp("__gt__",$B.$call(($locals_game["int"] || _b_.int))($B.$check_def_local("char",$locals["char"])),$B.$check_def_local("maxi",$locals["maxi"])))){
+                  ;$locals.$line_info = "125,game";if($locals.$f_trace !== _b_.None){$B.trace_line()};_b_.None;
+                  var $res = ($locals_game["True"] || _b_.True);
+                  if($locals.$f_trace !== _b_.None){
+                    $B.trace_return($res)
+                  }
+                  $B.leave_frame({$locals});
+                  return $res;
+                }
+                ;$locals.$line_info = "128,game";if($locals.$f_trace !== _b_.None){$B.trace_line()};_b_.None;
+                var $res = ($locals_game["False"] || _b_.False);
+                if($locals.$f_trace !== _b_.None){
+                  $B.trace_return($res)
+                }
+                $B.leave_frame({$locals});
+                return $res;
+              }catch(err){
+                $B.set_exc(err)
+                if((! err.$in_trace_func) && $locals.$f_trace !== _b_.None){
+                  $locals.$f_trace = $B.trace_exception()
+                }
+                $B.leave_frame({$locals});throw err
+              }
+            }
+            VerifInput12.$is_func = true
+            VerifInput12.$infos = {
+              __name__:"VerifInput",
+              __qualname__:"VerifInput",
+              __defaults__ : _b_.None,
+              __kwdefaults__ : _b_.None,
+              __annotations__: {},
+              __dict__: $B.empty_dict(),
+              __doc__: $B.String("\n\
+    f( str , int ) -> bool\n\
+    retourne False si une chaine de caractere est valide et True sinon\n\
+    (c'est pour l'entre de l'utilisateur)"),
+              __module__ : "game",
+              __code__:{
+                co_argcount:2,
+                co_filename:$locals_game["__file__"] || "<string>",
+                co_firstlineno:99,
+                co_flags:67,
+                co_freevars: ["False"],
+                co_kwonlyargcount:0,
+                co_name: "VerifInput",
+                co_nlocals: 6,
+                co_posonlyargcount: 0,
+                co_varnames: $B.fast_tuple(["char", "maxi", "charPossible", "i", "valid", "j"])
+              }
+            };_b_.None;
+            return VerifInput12
+          }
+          $locals_game["VerifInput"] = VerifInput$12({})
+          $locals_game["VerifInput"].$set_defaults = function(value){
+            return $locals_game["VerifInput"] = VerifInput$12(value)
+          }
+          ;$locals.$line_info = "131,game";if($locals.$f_trace !== _b_.None){$B.trace_line()};_b_.None;
+          var MontreJeu$15 = function($defaults){
+            function MontreJeu15(_grid){
+              var $locals_game_MontreJeu_7 = {},
+                  $locals = $locals_game_MontreJeu_7;
+              var $len = arguments.length;
+              var last_arg;if($len > 0 && ((last_arg = arguments[$len - 1]) !== undefined) && last_arg.$nat !== undefined){
+                $locals_game_MontreJeu_7 = $locals = $B.args("MontreJeu", 1, {"grid":null}, ["grid"], arguments, $defaults, null, null);
+              }else{
+                if($len == 1){
+                  $locals_game_MontreJeu_7 = $locals = $B.conv_undef({"grid": _grid})
+                }else if($len > 1){
+                  $B.wrong_nb_args("MontreJeu", $len, 1, ["grid"])
+                }else if($len + Object.keys($defaults).length < 1){
+                  $B.wrong_nb_args("MontreJeu", $len, 1, ["grid"])
+                }else{
+                  $locals_game_MontreJeu_7 = $locals = $B.conv_undef({"grid": _grid})
+                  var defparams = ["grid"]
+                  for(var i = $len; i < defparams.length; i++){
+                    $locals[defparams[i]] = $defaults[defparams[i]]
+                  }
+                }
+              }
+              $locals.$line_info = "131,game"
+              var $top_frame = ["game_MontreJeu_7", $locals,"game", $locals_game, MontreJeu15]
+              $locals.$f_trace = $B.enter_frame($top_frame)
+              var $stack_length = $B.frames_stack.length;
+              try{
+                $B.js_this = this;
+                ;$locals.$line_info = "132,game";if($locals.$f_trace !== _b_.None){$B.trace_line()};_b_.None;
+                $B.String("\n\
+    f( list )\n\
+    permet l'affichage de la liste en argument soit le plateau");
+                ;$locals.$line_info = "136,game";if($locals.$f_trace !== _b_.None){$B.trace_line()};_b_.None;
+                var $no_break16 = true
+                var $next_func_25 = $B.next_of($B.$call($B.$global_search("range", ["game_MontreJeu_7", "game"]))($B.$call(($locals_game["len"] || _b_.len))($B.$check_def_local("grid",$locals["grid"]))))
+                while(true){
+                  try{
+                    var $next_25 = $next_func_25()
+                  }catch(err){
+                    if($B.is_exc(err, [_b_.StopIteration])){
+                      break
+                    }else{
+                      $B.leave_frame({$locals, value: _b_.None});throw err
+                    }
+                  }
+                  $locals_game_MontreJeu_7["i"] = $next_25
+
+                  ;$locals.$line_info = "138,game";if($locals.$f_trace !== _b_.None){$B.trace_line()};_b_.None;
+
+                  $B.$call(($locals_game["print"] || _b_.print))($B.$getitem($B.$check_def_local("grid",$locals["grid"]),$B.rich_op("sub", $B.rich_op("sub", $B.$call(($locals_game["len"] || _b_.len))($B.$check_def_local("grid",$locals["grid"])), $B.$check_def_local("i",$locals["i"])), 1)));
+                  ;$locals.$line_info = "136,game";if($locals.$f_trace !== _b_.None){$B.trace_line()};_b_.None;
+                }
+
+                if($locals.$f_trace !== _b_.None){
+                  $B.trace_return(_b_.None)
+                }
+                $B.leave_frame({$locals});return _b_.None
+              }catch(err){
+                $B.set_exc(err)
+                if((! err.$in_trace_func) && $locals.$f_trace !== _b_.None){
+                  $locals.$f_trace = $B.trace_exception()
+                }
+                $B.leave_frame({$locals});throw err
+              }
+            }
+            MontreJeu15.$is_func = true
+            MontreJeu15.$infos = {
+              __name__:"MontreJeu",
+              __qualname__:"MontreJeu",
+              __defaults__ : _b_.None,
+              __kwdefaults__ : _b_.None,
+              __annotations__: {},
+              __dict__: $B.empty_dict(),
+              __doc__: $B.String("\n\
+    f( list )\n\
+    permet l'affichage de la liste en argument soit le plateau"),
+              __module__ : "game",
+              __code__:{
+                co_argcount:1,
+                co_filename:$locals_game["__file__"] || "<string>",
+                co_firstlineno:131,
+                co_flags:67,
+                co_freevars: ["range"],
+                co_kwonlyargcount:0,
+                co_name: "MontreJeu",
+                co_nlocals: 2,
+                co_posonlyargcount: 0,
+                co_varnames: $B.fast_tuple(["grid", "i"])
+              }
+            };_b_.None;
+            return MontreJeu15
+          }
+          $locals_game["MontreJeu"] = MontreJeu$15({})
+          $locals_game["MontreJeu"].$set_defaults = function(value){
+            return $locals_game["MontreJeu"] = MontreJeu$15(value)
+          }
+          ;$locals.$line_info = "153,game";if($locals.$f_trace !== _b_.None){$B.trace_line()};_b_.None;
+          var IA_aleatoire$17 = function($defaults){
+            function IA_aleatoire17(_grid){
+              var $locals_game_IA_aleatoire_8 = {},
+                  $locals = $locals_game_IA_aleatoire_8;
+              var $len = arguments.length;
+              var last_arg;if($len > 0 && ((last_arg = arguments[$len - 1]) !== undefined) && last_arg.$nat !== undefined){
+                $locals_game_IA_aleatoire_8 = $locals = $B.args("IA_aleatoire", 1, {"grid":null}, ["grid"], arguments, $defaults, null, null);
+              }else{
+                if($len == 1){
+                  $locals_game_IA_aleatoire_8 = $locals = $B.conv_undef({"grid": _grid})
+                }else if($len > 1){
+                  $B.wrong_nb_args("IA_aleatoire", $len, 1, ["grid"])
+                }else if($len + Object.keys($defaults).length < 1){
+                  $B.wrong_nb_args("IA_aleatoire", $len, 1, ["grid"])
+                }else{
+                  $locals_game_IA_aleatoire_8 = $locals = $B.conv_undef({"grid": _grid})
+                  var defparams = ["grid"]
+                  for(var i = $len; i < defparams.length; i++){
+                    $locals[defparams[i]] = $defaults[defparams[i]]
+                  }
+                }
+              }
+              $locals.$line_info = "153,game"
+              var $top_frame = ["game_IA_aleatoire_8", $locals,"game", $locals_game, IA_aleatoire17]
+              $locals.$f_trace = $B.enter_frame($top_frame)
+              var $stack_length = $B.frames_stack.length;
+              try{
+                $B.js_this = this;
+                ;$locals.$line_info = "154,game";if($locals.$f_trace !== _b_.None){$B.trace_line()};_b_.None;
+                $B.String("\n\
+    f( list ) -> list\n\
+    retourne une position aleatoire\n\
+    utilise:\n\
+    possible( int , int or str , list ) et Remplace( int , int , list )");
+                ;$locals.$line_info = "161,game";if($locals.$f_trace !== _b_.None){$B.trace_line()};_b_.None;
+                $locals_game_IA_aleatoire_8["pos"] = $B.$list([]);
+                ;$locals.$line_info = "162,game";if($locals.$f_trace !== _b_.None){$B.trace_line()};_b_.None;
+                var $no_break18 = true
+                var $next_func_26 = $B.next_of($B.$call($B.$global_search("range", ["game_IA_aleatoire_8", "game"]))($B.$call(($locals_game["len"] || _b_.len))($B.$check_def_local("grid",$locals["grid"]))))
+                while(true){
+                  try{
+                    var $next_26 = $next_func_26()
+                  }catch(err){
+                    if($B.is_exc(err, [_b_.StopIteration])){
+                      break
+                    }else{
+                      $B.leave_frame({$locals, value: _b_.None});throw err
+                    }
+                  }
+                  $locals_game_IA_aleatoire_8["i"] = $next_26
+
+                  ;$locals.$line_info = "163,game";if($locals.$f_trace !== _b_.None){$B.trace_line()};_b_.None;
+
+                  $locals_game_IA_aleatoire_8["entre"] = $B.$getitem($B.$check_def_local("grid",$locals["grid"]),$B.$check_def_local("i",$locals["i"]));
+
+                  ;$locals.$line_info = "164,game";if($locals.$f_trace !== _b_.None){$B.trace_line()};_b_.None;
+
+                  var $no_break19 = true
+                  var $next_func_27 = $B.next_of($B.$call($B.$global_search("range", ["game_IA_aleatoire_8", "game"]))($B.$call(($locals_game["len"] || _b_.len))($locals["entre"])))
+                  while(true){
+                    try{
+                      var $next_27 = $next_func_27()
+                    }catch(err){
+                      if($B.is_exc(err, [_b_.StopIteration])){
+                        break
+                      }else{
+                        $B.leave_frame({$locals, value: _b_.None});throw err
+                      }
+                    }
+                    $locals_game_IA_aleatoire_8["j"] = $next_27
+
+                    ;$locals.$line_info = "165,game";if($locals.$f_trace !== _b_.None){$B.trace_line()};_b_.None;
+
+                    if($B.$bool($B.rich_comp("__eq__",$B.$getitem($locals["entre"],$B.$check_def_local("j",$locals["j"])),1))){
+                      ;$locals.$line_info = "166,game";if($locals.$f_trace !== _b_.None){$B.trace_line()};_b_.None;
+                      var $temp,$left;
+                      if($locals["pos"] === undefined){
+                        throw $B.name_error('pos')
+                      }
+                      $temp = $B.$list([$B.$list([$B.add($B.$check_def_local("j",$locals["j"]), 1),$B.add($B.$check_def_local("i",$locals["i"]), 1)])]);
+                      $left = $locals_game_IA_aleatoire_8["pos"]
+                      if(typeof $temp.valueOf() == "number" && $left.constructor === Number && Number.isSafeInteger($left+$temp)){
+                        (typeof $temp == "number" && typeof $left == "number") ? $locals_game_IA_aleatoire_8["pos"]+=$temp : $locals_game_IA_aleatoire_8["pos"] = new Number($left+$temp.valueOf())
+                      }else if(typeof $left == "string" && typeof $temp == "string"){
+                        $locals_game_IA_aleatoire_8["pos"] = $left + $temp
+                      }else{
+                        var iadd = $B.$getattr($locals["pos"],"__iadd__", null)
+                        if(iadd === null){
+                          ;$locals.$line_info = "166,game";if($locals.$f_trace !== _b_.None){$B.trace_line()};_b_.None;
+                          $locals_game_IA_aleatoire_8["pos"] = $B.add($locals_game_IA_aleatoire_8["pos"], $temp);
+                        }else{
+                          ;$locals.$line_info = "166,game";if($locals.$f_trace !== _b_.None){$B.trace_line()};_b_.None;
+                          $locals_game_IA_aleatoire_8["pos"] = iadd($temp)
+                          ;
+                        }
+                      }
+                    }
+                    ;$locals.$line_info = "164,game";if($locals.$f_trace !== _b_.None){$B.trace_line()};_b_.None;
+                  }
+
+                  ;$locals.$line_info = "162,game";if($locals.$f_trace !== _b_.None){$B.trace_line()};_b_.None;
+                }
+
+                ;$locals.$line_info = "168,game";if($locals.$f_trace !== _b_.None){$B.trace_line()};_b_.None;
+                $locals_game_IA_aleatoire_8["rando"] = $B.$getitem($locals["pos"],$B.$call($locals_game["randrange"])(0, $B.$call(($locals_game["len"] || _b_.len))($locals["pos"])));
+                ;$locals.$line_info = "169,game";if($locals.$f_trace !== _b_.None){$B.trace_line()};_b_.None;
+                $locals_game_IA_aleatoire_8["x"] = $B.$getitem($locals["rando"],0);
+                ;$locals.$line_info = "170,game";if($locals.$f_trace !== _b_.None){$B.trace_line()};_b_.None;
+                $locals_game_IA_aleatoire_8["y"] = $B.$getitem($locals["rando"],1);
+                ;$locals.$line_info = "173,game";if($locals.$f_trace !== _b_.None){$B.trace_line()};_b_.None;
+                var $res = $B.$call($locals_game["Remplace"])($locals["x"], $locals["y"], $B.$check_def_local("grid",$locals["grid"]));
+                if($locals.$f_trace !== _b_.None){
+                  $B.trace_return($res)
+                }
+                $B.leave_frame({$locals});
+                return $res;
+              }catch(err){
+                $B.set_exc(err)
+                if((! err.$in_trace_func) && $locals.$f_trace !== _b_.None){
+                  $locals.$f_trace = $B.trace_exception()
+                }
+                $B.leave_frame({$locals});throw err
+              }
+            }
+            IA_aleatoire17.$is_func = true
+            IA_aleatoire17.$infos = {
+              __name__:"IA_aleatoire",
+              __qualname__:"IA_aleatoire",
+              __defaults__ : _b_.None,
+              __kwdefaults__ : _b_.None,
+              __annotations__: {},
+              __dict__: $B.empty_dict(),
+              __doc__: $B.String("\n\
+    f( list ) -> list\n\
+    retourne une position aleatoire\n\
+    utilise:\n\
+    possible( int , int or str , list ) et Remplace( int , int , list )"),
+              __module__ : "game",
+              __code__:{
+                co_argcount:1,
+                co_filename:$locals_game["__file__"] || "<string>",
+                co_firstlineno:153,
+                co_flags:67,
+                co_freevars: ["range","randrange","Remplace"],
+                co_kwonlyargcount:0,
+                co_name: "IA_aleatoire",
+                co_nlocals: 8,
+                co_posonlyargcount: 0,
+                co_varnames: $B.fast_tuple(["grid", "pos", "i", "entre", "j", "rando", "x", "y"])
+              }
+            };_b_.None;
+            return IA_aleatoire17
+          }
+          $locals_game["IA_aleatoire"] = IA_aleatoire$17({})
+          $locals_game["IA_aleatoire"].$set_defaults = function(value){
+            return $locals_game["IA_aleatoire"] = IA_aleatoire$17(value)
+          }
+          ;$locals.$line_info = "177,game";if($locals.$f_trace !== _b_.None){$B.trace_line()};_b_.None;
+          var Eval$20 = function($defaults){
+            function Eval20(_Evaluation){
+              var $locals_game_Eval_9 = {},
+                  $locals = $locals_game_Eval_9;
+              var $len = arguments.length;
+              var last_arg;if($len > 0 && ((last_arg = arguments[$len - 1]) !== undefined) && last_arg.$nat !== undefined){
+                $locals_game_Eval_9 = $locals = $B.args("Eval", 1, {"Evaluation":null}, ["Evaluation"], arguments, $defaults, null, null);
+              }else{
+                if($len == 1){
+                  $locals_game_Eval_9 = $locals = $B.conv_undef({"Evaluation": _Evaluation})
+                }else if($len > 1){
+                  $B.wrong_nb_args("Eval", $len, 1, ["Evaluation"])
+                }else if($len + Object.keys($defaults).length < 1){
+                  $B.wrong_nb_args("Eval", $len, 1, ["Evaluation"])
+                }else{
+                  $locals_game_Eval_9 = $locals = $B.conv_undef({"Evaluation": _Evaluation})
+                  var defparams = ["Evaluation"]
+                  for(var i = $len; i < defparams.length; i++){
+                    $locals[defparams[i]] = $defaults[defparams[i]]
+                  }
+                }
+              }
+              $locals.$line_info = "177,game"
+              var $top_frame = ["game_Eval_9", $locals,"game", $locals_game, Eval20]
+              $locals.$f_trace = $B.enter_frame($top_frame)
+              var $stack_length = $B.frames_stack.length;
+              try{
+                $B.js_this = this;
+                ;$locals.$line_info = "178,game";if($locals.$f_trace !== _b_.None){$B.trace_line()};_b_.None;
+                $B.String("\n\
+    f( list ) -> list\n\
+    retourne toutes les position possible de jouer au coup suivant\n\
+    (fait pour evaluer les possibilites de l'IA)");
+                ;$locals.$line_info = "182,game";if($locals.$f_trace !== _b_.None){$B.trace_line()};_b_.None;
+                $locals_game_Eval_9["newPosition"] = $B.$list([]);
+                ;$locals.$line_info = "183,game";if($locals.$f_trace !== _b_.None){$B.trace_line()};_b_.None;
+                var $no_break21 = true
+                var $next_func_28 = $B.next_of($B.$call($B.$global_search("range", ["game_Eval_9", "game"]))($B.$call(($locals_game["len"] || _b_.len))($B.$check_def_local("Evaluation",$locals["Evaluation"]))))
+                while(true){
+                  try{
+                    var $next_28 = $next_func_28()
+                  }catch(err){
+                    if($B.is_exc(err, [_b_.StopIteration])){
+                      break
+                    }else{
+                      $B.leave_frame({$locals, value: _b_.None});throw err
+                    }
+                  }
+                  $locals_game_Eval_9["loop1"] = $next_28
+
+                  ;$locals.$line_info = "184,game";if($locals.$f_trace !== _b_.None){$B.trace_line()};_b_.None;
+
+                  $locals_game_Eval_9["EvalX"] = $B.$getitem($B.$check_def_local("Evaluation",$locals["Evaluation"]),$B.$check_def_local("loop1",$locals["loop1"]));
+
+                  ;$locals.$line_info = "185,game";if($locals.$f_trace !== _b_.None){$B.trace_line()};_b_.None;
+
+                  var $no_break22 = true
+                  var $next_func_29 = $B.next_of($B.$call($B.$global_search("range", ["game_Eval_9", "game"]))($B.$call(($locals_game["len"] || _b_.len))($locals["EvalX"])))
+                  while(true){
+                    try{
+                      var $next_29 = $next_func_29()
+                    }catch(err){
+                      if($B.is_exc(err, [_b_.StopIteration])){
+                        break
+                      }else{
+                        $B.leave_frame({$locals, value: _b_.None});throw err
+                      }
+                    }
+                    $locals_game_Eval_9["loop2"] = $next_29
+
+                    ;$locals.$line_info = "186,game";if($locals.$f_trace !== _b_.None){$B.trace_line()};_b_.None;
+
+                    if($B.$bool($B.rich_comp("__ne__",$B.$getitem($locals["EvalX"],$B.$check_def_local("loop2",$locals["loop2"])),0))){
+                      ;$locals.$line_info = "188,game";if($locals.$f_trace !== _b_.None){$B.trace_line()};_b_.None;
+                      var $temp,$left;
+                      if($locals["newPosition"] === undefined){
+                        throw $B.name_error('newPosition')
+                      }
+                      $temp = $B.add($B.$list([$B.$list([$B.add($B.$check_def_local("loop2",$locals["loop2"]), 1),$B.add($B.$check_def_local("loop1",$locals["loop1"]), 1)])]), $B.$list([$B.$call($locals_game["Remplace"])($B.add($B.$check_def_local("loop2",$locals["loop2"]), 1), $B.add($B.$check_def_local("loop1",$locals["loop1"]), 1), $B.$call($locals_game["deepcopy"])($B.$check_def_local("Evaluation",$locals["Evaluation"])))]));
+                      $left = $locals_game_Eval_9["newPosition"]
+                      if(typeof $temp.valueOf() == "number" && $left.constructor === Number && Number.isSafeInteger($left+$temp)){
+                        (typeof $temp == "number" && typeof $left == "number") ? $locals_game_Eval_9["newPosition"]+=$temp : $locals_game_Eval_9["newPosition"] = new Number($left+$temp.valueOf())
+                      }else if(typeof $left == "string" && typeof $temp == "string"){
+                        $locals_game_Eval_9["newPosition"] = $left + $temp
+                      }else{
+                        var iadd = $B.$getattr($locals["newPosition"],"__iadd__", null)
+                        if(iadd === null){
+                          ;$locals.$line_info = "188,game";if($locals.$f_trace !== _b_.None){$B.trace_line()};_b_.None;
+                          $locals_game_Eval_9["newPosition"] = $B.add($locals_game_Eval_9["newPosition"], $temp);
+                        }else{
+                          ;$locals.$line_info = "188,game";if($locals.$f_trace !== _b_.None){$B.trace_line()};_b_.None;
+                          $locals_game_Eval_9["newPosition"] = iadd($temp)
+                          ;
+                        }
+                      }
+                    }
+                    ;$locals.$line_info = "185,game";if($locals.$f_trace !== _b_.None){$B.trace_line()};_b_.None;
+                  }
+
+                  ;$locals.$line_info = "183,game";if($locals.$f_trace !== _b_.None){$B.trace_line()};_b_.None;
+                }
+
+                ;$locals.$line_info = "189,game";if($locals.$f_trace !== _b_.None){$B.trace_line()};_b_.None;
+                var $res = $locals["newPosition"];
+                if($locals.$f_trace !== _b_.None){
+                  $B.trace_return($res)
+                }
+                $B.leave_frame({$locals});
+                return $res;
+              }catch(err){
+                $B.set_exc(err)
+                if((! err.$in_trace_func) && $locals.$f_trace !== _b_.None){
+                  $locals.$f_trace = $B.trace_exception()
+                }
+                $B.leave_frame({$locals});throw err
+              }
+            }
+            Eval20.$is_func = true
+            Eval20.$infos = {
+              __name__:"Eval",
+              __qualname__:"Eval",
+              __defaults__ : _b_.None,
+              __kwdefaults__ : _b_.None,
+              __annotations__: {},
+              __dict__: $B.empty_dict(),
+              __doc__: $B.String("\n\
+    f( list ) -> list\n\
+    retourne toutes les position possible de jouer au coup suivant\n\
+    (fait pour evaluer les possibilites de l'IA)"),
+              __module__ : "game",
+              __code__:{
+                co_argcount:1,
+                co_filename:$locals_game["__file__"] || "<string>",
+                co_firstlineno:177,
+                co_flags:67,
+                co_freevars: ["range","Remplace","deepcopy"],
+                co_kwonlyargcount:0,
+                co_name: "Eval",
+                co_nlocals: 5,
+                co_posonlyargcount: 0,
+                co_varnames: $B.fast_tuple(["Evaluation", "newPosition", "loop1", "EvalX", "loop2"])
+              }
+            };_b_.None;
+            return Eval20
+          }
+          $locals_game["Eval"] = Eval$20({})
+          $locals_game["Eval"].$set_defaults = function(value){
+            return $locals_game["Eval"] = Eval$20(value)
+          }
+          ;$locals.$line_info = "192,game";if($locals.$f_trace !== _b_.None){$B.trace_line()};_b_.None;
+          var ScoreCounter$23 = function($defaults){
+            function ScoreCounter23(_grid, _coup, _player){
+              var $locals_game_ScoreCounter_10 = {},
+                  $locals = $locals_game_ScoreCounter_10;
+              var $len = arguments.length;
+              var last_arg;if($len > 0 && ((last_arg = arguments[$len - 1]) !== undefined) && last_arg.$nat !== undefined){
+                $locals_game_ScoreCounter_10 = $locals = $B.args("ScoreCounter", 3, {"grid":null, "coup":null, "player":null}, ["grid", "coup", "player"], arguments, $defaults, null, null);
+              }else{
+                if($len == 3){
+                  $locals_game_ScoreCounter_10 = $locals = $B.conv_undef({"grid": _grid, "coup": _coup, "player": _player})
+                }else if($len > 3){
+                  $B.wrong_nb_args("ScoreCounter", $len, 3, ["grid","coup","player"])
+                }else if($len + Object.keys($defaults).length < 3){
+                  $B.wrong_nb_args("ScoreCounter", $len, 3, ["grid","coup","player"])
+                }else{
+                  $locals_game_ScoreCounter_10 = $locals = $B.conv_undef({"grid": _grid, "coup": _coup, "player": _player})
+                  var defparams = ["grid","coup","player"]
+                  for(var i = $len; i < defparams.length; i++){
+                    $locals[defparams[i]] = $defaults[defparams[i]]
+                  }
+                }
+              }
+              $locals.$line_info = "192,game"
+              var $top_frame = ["game_ScoreCounter_10", $locals,"game", $locals_game, ScoreCounter23]
+              $locals.$f_trace = $B.enter_frame($top_frame)
+              var $stack_length = $B.frames_stack.length;
+              try{
+                $B.js_this = this;
+                ;$locals.$line_info = "193,game";if($locals.$f_trace !== _b_.None){$B.trace_line()};_b_.None;
+                $B.String("\n\
+    f( list , int , int ) -> int\n\
+    retourne le score pour l'IA ou l'utilisateur en fonction de la position");
+                ;$locals.$line_info = "197,game";if($locals.$f_trace !== _b_.None){$B.trace_line()};_b_.None;
+                $locals_game_ScoreCounter_10["Score"] = 0;
+                ;$locals.$line_info = "200,game";if($locals.$f_trace !== _b_.None){$B.trace_line()};_b_.None;
+                if($B.$bool($B.$test_expr($B.$test_item($B.$call($locals_game["Contient"])($B.$check_def_local("grid",$locals["grid"])))&&$B.$test_item((typeof $B.$check_def_local("player",$locals["player"]) == "number" ? $B.$check_def_local("player",$locals["player"])==1 : $B.rich_comp("__eq__",$B.$check_def_local("player",$locals["player"]),1)))))){
+                  ;$locals.$line_info = "201,game";if($locals.$f_trace !== _b_.None){$B.trace_line()};_b_.None;
+                  if($B.$bool($B.rich_comp("__eq__",$B.$call($locals_game["NombrePosition"])($B.$check_def_local("grid",$locals["grid"])),1))){
+                    ;$locals.$line_info = "202,game";if($locals.$f_trace !== _b_.None){$B.trace_line()};_b_.None;
+                    var $temp,$left;
+                    if($locals["Score"] === undefined){
+                      throw $B.name_error('Score')
+                    }
+                    $temp = ($B.$check_def_local("coup",$locals["coup"]).valueOf && typeof $B.$check_def_local("coup",$locals["coup"]).valueOf() == "number" ? (typeof $B.$check_def_local("coup",$locals["coup"]) == "number" ? $B.mul($B.$check_def_local("coup",$locals["coup"]),10) : new Number($B.mul($B.$check_def_local("coup",$locals["coup"]),10))): $B.rich_op("mul",$B.$check_def_local("coup",$locals["coup"]),10));
+                    $left = $locals_game_ScoreCounter_10["Score"]
+                    if(typeof $temp.valueOf() == "number" && $left.constructor === Number && Number.isSafeInteger($left+$temp)){
+                      (typeof $temp == "number" && typeof $left == "number") ? $locals_game_ScoreCounter_10["Score"]+=$temp : $locals_game_ScoreCounter_10["Score"] = new Number($left+$temp.valueOf())
+                    }else if(typeof $left == "string" && typeof $temp == "string"){
+                      $locals_game_ScoreCounter_10["Score"] = $left + $temp
+                    }else{
+                      var iadd = $B.$getattr($locals["Score"],"__iadd__", null)
+                      if(iadd === null){
+                        ;$locals.$line_info = "202,game";if($locals.$f_trace !== _b_.None){$B.trace_line()};_b_.None;
+                        $locals_game_ScoreCounter_10["Score"] = $B.add($locals_game_ScoreCounter_10["Score"], $temp);
+                      }else{
+                        ;$locals.$line_info = "202,game";if($locals.$f_trace !== _b_.None){$B.trace_line()};_b_.None;
+                        $locals_game_ScoreCounter_10["Score"] = iadd($temp)
+                        ;
+                      }
+                    }
+                  }else if($B.$bool(($B.set_line("203,game_ScoreCounter_10")) && $B.rich_comp("__gt__",$B.$call($locals_game["NombrePosition"])($B.$check_def_local("grid",$locals["grid"])),1))){
+                    ;$locals.$line_info = "204,game";if($locals.$f_trace !== _b_.None){$B.trace_line()};_b_.None;
+                    var $temp,$left;
+                    if($locals["Score"] === undefined){
+                      throw $B.name_error('Score')
+                    }
+                    $temp = $B.$check_def_local("coup",$locals["coup"]);
+                    $left = $locals_game_ScoreCounter_10["Score"]
+                    if(typeof $temp.valueOf() == "number" && $left.constructor === Number && Number.isSafeInteger($left+$temp)){
+                      (typeof $temp == "number" && typeof $left == "number") ? $locals_game_ScoreCounter_10["Score"]+=$temp : $locals_game_ScoreCounter_10["Score"] = new Number($left+$temp.valueOf())
+                    }else if(typeof $left == "string" && typeof $temp == "string"){
+                      $locals_game_ScoreCounter_10["Score"] = $left + $temp
+                    }else{
+                      var iadd = $B.$getattr($locals["Score"],"__iadd__", null)
+                      if(iadd === null){
+                        ;$locals.$line_info = "204,game";if($locals.$f_trace !== _b_.None){$B.trace_line()};_b_.None;
+                        $locals_game_ScoreCounter_10["Score"] = $B.add($locals_game_ScoreCounter_10["Score"], $temp);
+                      }else{
+                        ;$locals.$line_info = "204,game";if($locals.$f_trace !== _b_.None){$B.trace_line()};_b_.None;
+                        $locals_game_ScoreCounter_10["Score"] = iadd($temp)
+                        ;
+                      }
+                    }
+                  }else{
+                    ;$locals.$line_info = "206,game";if($locals.$f_trace !== _b_.None){$B.trace_line()};_b_.None;
+                    var $temp,$left;
+                    if($locals["Score"] === undefined){
+                      throw $B.name_error('Score')
+                    }
+                    $temp = ($B.$check_def_local("coup",$locals["coup"]).valueOf && typeof $B.$check_def_local("coup",$locals["coup"]).valueOf() == "number" ? (typeof $B.$check_def_local("coup",$locals["coup"]) == "number" ? $B.mul($B.$check_def_local("coup",$locals["coup"]),2) : new Number($B.mul($B.$check_def_local("coup",$locals["coup"]),2))): $B.rich_op("mul",$B.$check_def_local("coup",$locals["coup"]),2));
+                    $left = $locals_game_ScoreCounter_10["Score"]
+                    if(typeof $temp.valueOf() == "number" && $left.constructor === Number && Number.isSafeInteger($left-$temp)){
+                      (typeof $temp == "number" && typeof $left == "number") ? $locals_game_ScoreCounter_10["Score"]-=$temp : $locals_game_ScoreCounter_10["Score"] = new Number($left-$temp.valueOf())
+                    }else{
+                      var iadd = $B.$getattr($locals["Score"],"__isub__", null)
+                      if(iadd === null){
+                        ;$locals.$line_info = "206,game";if($locals.$f_trace !== _b_.None){$B.trace_line()};_b_.None;
+                        $locals_game_ScoreCounter_10["Score"] = $B.rich_op("sub", $locals_game_ScoreCounter_10["Score"], $temp);
+                      }else{
+                        ;$locals.$line_info = "206,game";if($locals.$f_trace !== _b_.None){$B.trace_line()};_b_.None;
+                        $locals_game_ScoreCounter_10["Score"] = iadd($temp)
+                        ;
+                      }
+                    }
+                  }
+                }
+                ;$locals.$line_info = "209,game";if($locals.$f_trace !== _b_.None){$B.trace_line()};_b_.None;
+                if($B.$bool($B.$test_expr($B.$test_item($B.rich_comp("__gt__",$B.$call($locals_game["NombrePosition"])($B.$check_def_local("grid",$locals["grid"])),1))&&$B.$test_item((typeof $B.$check_def_local("player",$locals["player"]) == "number" ? $B.$check_def_local("player",$locals["player"])==2 : $B.rich_comp("__eq__",$B.$check_def_local("player",$locals["player"]),2)))))){
+                  ;$locals.$line_info = "210,game";if($locals.$f_trace !== _b_.None){$B.trace_line()};_b_.None;
+                  var $temp,$left;
+                  if($locals["Score"] === undefined){
+                    throw $B.name_error('Score')
+                  }
+                  $temp = $B.$check_def_local("coup",$locals["coup"]);
+                  $left = $locals_game_ScoreCounter_10["Score"]
+                  if(typeof $temp.valueOf() == "number" && $left.constructor === Number && Number.isSafeInteger($left+$temp)){
+                    (typeof $temp == "number" && typeof $left == "number") ? $locals_game_ScoreCounter_10["Score"]+=$temp : $locals_game_ScoreCounter_10["Score"] = new Number($left+$temp.valueOf())
+                  }else if(typeof $left == "string" && typeof $temp == "string"){
+                    $locals_game_ScoreCounter_10["Score"] = $left + $temp
+                  }else{
+                    var iadd = $B.$getattr($locals["Score"],"__iadd__", null)
+                    if(iadd === null){
+                      ;$locals.$line_info = "210,game";if($locals.$f_trace !== _b_.None){$B.trace_line()};_b_.None;
+                      $locals_game_ScoreCounter_10["Score"] = $B.add($locals_game_ScoreCounter_10["Score"], $temp);
+                    }else{
+                      ;$locals.$line_info = "210,game";if($locals.$f_trace !== _b_.None){$B.trace_line()};_b_.None;
+                      $locals_game_ScoreCounter_10["Score"] = iadd($temp)
+                      ;
+                    }
+                  }
+                }
+                ;$locals.$line_info = "211,game";if($locals.$f_trace !== _b_.None){$B.trace_line()};_b_.None;
+                var $res = $locals["Score"];
+                if($locals.$f_trace !== _b_.None){
+                  $B.trace_return($res)
+                }
+                $B.leave_frame({$locals});
+                return $res;
+              }catch(err){
+                $B.set_exc(err)
+                if((! err.$in_trace_func) && $locals.$f_trace !== _b_.None){
+                  $locals.$f_trace = $B.trace_exception()
+                }
+                $B.leave_frame({$locals});throw err
+              }
+            }
+            ScoreCounter23.$is_func = true
+            ScoreCounter23.$infos = {
+              __name__:"ScoreCounter",
+              __qualname__:"ScoreCounter",
+              __defaults__ : _b_.None,
+              __kwdefaults__ : _b_.None,
+              __annotations__: {},
+              __dict__: $B.empty_dict(),
+              __doc__: $B.String("\n\
+    f( list , int , int ) -> int\n\
+    retourne le score pour l'IA ou l'utilisateur en fonction de la position"),
+              __module__ : "game",
+              __code__:{
+                co_argcount:3,
+                co_filename:$locals_game["__file__"] || "<string>",
+                co_firstlineno:192,
+                co_flags:67,
+                co_freevars: ["Contient","NombrePosition"],
+                co_kwonlyargcount:0,
+                co_name: "ScoreCounter",
+                co_nlocals: 4,
+                co_posonlyargcount: 0,
+                co_varnames: $B.fast_tuple(["grid", "coup", "player", "Score"])
+              }
+            };_b_.None;
+            return ScoreCounter23
+          }
+          $locals_game["ScoreCounter"] = ScoreCounter$23({})
+          $locals_game["ScoreCounter"].$set_defaults = function(value){
+            return $locals_game["ScoreCounter"] = ScoreCounter$23(value)
+          }
+          ;$locals.$line_info = "216,game";if($locals.$f_trace !== _b_.None){$B.trace_line()};_b_.None;
+          var CalculScore$24 = function($defaults){
+            function CalculScore24(_Grid, _position, _best){
+              var $locals_game_CalculScore_11 = {},
+                  $locals = $locals_game_CalculScore_11;
+              var $len = arguments.length;
+              var last_arg;if($len > 0 && ((last_arg = arguments[$len - 1]) !== undefined) && last_arg.$nat !== undefined){
+                $locals_game_CalculScore_11 = $locals = $B.args("CalculScore", 3, {"Grid":null, "position":null, "best":null}, ["Grid", "position", "best"], arguments, $defaults, null, null);
+              }else{
+                if($len == 3){
+                  $locals_game_CalculScore_11 = $locals = $B.conv_undef({"Grid": _Grid, "position": _position, "best": _best})
+                }else if($len > 3){
+                  $B.wrong_nb_args("CalculScore", $len, 3, ["Grid","position","best"])
+                }else if($len + Object.keys($defaults).length < 3){
+                  $B.wrong_nb_args("CalculScore", $len, 3, ["Grid","position","best"])
+                }else{
+                  $locals_game_CalculScore_11 = $locals = $B.conv_undef({"Grid": _Grid, "position": _position, "best": _best})
+                  var defparams = ["Grid","position","best"]
+                  for(var i = $len; i < defparams.length; i++){
+                    $locals[defparams[i]] = $defaults[defparams[i]]
+                  }
+                }
+              }
+              $locals.$line_info = "216,game"
+              var $top_frame = ["game_CalculScore_11", $locals,"game", $locals_game, CalculScore24]
+              $locals.$f_trace = $B.enter_frame($top_frame)
+              var $stack_length = $B.frames_stack.length;
+              try{
+                $B.js_this = this;
+                ;$locals.$line_info = "217,game";if($locals.$f_trace !== _b_.None){$B.trace_line()};_b_.None;
+                $B.String("\n\
+    f( list , int , int ) -> int\n\
+    retourne le score de la position Grid en argument\n\
+    et des 3 coups suivants (mais plus est possible XD) ");
+                ;$locals.$line_info = "221,game";if($locals.$f_trace !== _b_.None){$B.trace_line()};_b_.None;
+                $locals_game_CalculScore_11["coup"] = 10;
+                ;$locals.$line_info = "222,game";if($locals.$f_trace !== _b_.None){$B.trace_line()};_b_.None;
+                $locals_game_CalculScore_11["Score"] = 0;
+                ;$locals.$line_info = "226,game";if($locals.$f_trace !== _b_.None){$B.trace_line()};_b_.None;
+                var $temp,$left;
+                if($locals["Score"] === undefined){
+                  throw $B.name_error('Score')
+                }
+                $temp = $B.$call($locals_game["ScoreCounter"])($B.$call($locals_game["deepcopy"])($B.$getitem($B.$check_def_local("Grid",$locals["Grid"]),$B.add(($B.$check_def_local("position",$locals["position"]).valueOf && typeof $B.$check_def_local("position",$locals["position"]).valueOf() == "number" ? (typeof $B.$check_def_local("position",$locals["position"]) == "number" ? $B.mul($B.$check_def_local("position",$locals["position"]),2) : new Number($B.mul($B.$check_def_local("position",$locals["position"]),2))): $B.rich_op("mul",$B.$check_def_local("position",$locals["position"]),2)), 1))), $locals["coup"], 1);
+                $left = $locals_game_CalculScore_11["Score"]
+                if(typeof $temp.valueOf() == "number" && $left.constructor === Number && Number.isSafeInteger($left+$temp)){
+                  (typeof $temp == "number" && typeof $left == "number") ? $locals_game_CalculScore_11["Score"]+=$temp : $locals_game_CalculScore_11["Score"] = new Number($left+$temp.valueOf())
+                }else if(typeof $left == "string" && typeof $temp == "string"){
+                  $locals_game_CalculScore_11["Score"] = $left + $temp
+                }else{
+                  var iadd = $B.$getattr($locals["Score"],"__iadd__", null)
+                  if(iadd === null){
+                    ;$locals.$line_info = "226,game";if($locals.$f_trace !== _b_.None){$B.trace_line()};_b_.None;
+                    $locals_game_CalculScore_11["Score"] = $B.add($locals_game_CalculScore_11["Score"], $temp);
+                  }else{
+                    ;$locals.$line_info = "226,game";if($locals.$f_trace !== _b_.None){$B.trace_line()};_b_.None;
+                    $locals_game_CalculScore_11["Score"] = iadd($temp)
+                    ;
+                  }
+                }
+                ;$locals.$line_info = "227,game";if($locals.$f_trace !== _b_.None){$B.trace_line()};_b_.None;
+                $locals_game_CalculScore_11["Tour2"] = $B.$call($locals_game["Eval"])($B.$getitem($B.$check_def_local("Grid",$locals["Grid"]),$B.add(($B.$check_def_local("position",$locals["position"]).valueOf && typeof $B.$check_def_local("position",$locals["position"]).valueOf() == "number" ? (typeof $B.$check_def_local("position",$locals["position"]) == "number" ? $B.mul($B.$check_def_local("position",$locals["position"]),2) : new Number($B.mul($B.$check_def_local("position",$locals["position"]),2))): $B.rich_op("mul",$B.$check_def_local("position",$locals["position"]),2)), 1)));
+                if($locals["coup"] === undefined){
+                  throw $B.name_error('coup')
+                }
+                $left = $locals_game_CalculScore_11["coup"]
+                ;$locals.$line_info = "230,game";if($locals.$f_trace !== _b_.None){$B.trace_line()};_b_.None;
+                if($left.constructor === Number && Number.isSafeInteger($left-(1))){
+                  (typeof $left == "number") ? $locals_game_CalculScore_11["coup"]-=(1) : $locals_game_CalculScore_11["coup"] = new Number($left-(1))
+                }else{
+                  var iadd = $B.$getattr($locals["coup"],"__isub__", null)
+                  if(iadd === null){
+                    ;$locals.$line_info = "230,game";if($locals.$f_trace !== _b_.None){$B.trace_line()};_b_.None;
+                    $locals_game_CalculScore_11["coup"] = $B.rich_op("sub", $locals_game_CalculScore_11["coup"], (1));
+                  }else{
+                    ;$locals.$line_info = "230,game";if($locals.$f_trace !== _b_.None){$B.trace_line()};_b_.None;
+                    $locals_game_CalculScore_11["coup"] = iadd((1))
+                    ;
+                  }
+                }
+                ;$locals.$line_info = "231,game";if($locals.$f_trace !== _b_.None){$B.trace_line()};_b_.None;
+                var $no_break25 = true
+                var $next_func_30 = $B.next_of($B.$call($B.$global_search("range", ["game_CalculScore_11", "game"]))($B.$call(($locals_game["int"] || _b_.int))($B.rich_op("truediv", $B.$call(($locals_game["len"] || _b_.len))($locals["Tour2"]), 2))))
+                while(true){
+                  try{
+                    var $next_30 = $next_func_30()
+                  }catch(err){
+                    if($B.is_exc(err, [_b_.StopIteration])){
+                      break
+                    }else{
+                      $B.leave_frame({$locals, value: _b_.None});throw err
+                    }
+                  }
+                  $locals_game_CalculScore_11["toure2"] = $next_30
+
+                  ;$locals.$line_info = "232,game";if($locals.$f_trace !== _b_.None){$B.trace_line()};_b_.None;
+
+                  var $temp,$left;
+
+                  if($locals["Score"] === undefined){
+                    throw $B.name_error('Score')
+                  }
+
+                  $temp = $B.$call($locals_game["ScoreCounter"])($B.$call($locals_game["deepcopy"])($B.$getitem($locals["Tour2"],$B.add(($B.$check_def_local("toure2",$locals["toure2"]).valueOf && typeof $B.$check_def_local("toure2",$locals["toure2"]).valueOf() == "number" ? (typeof $B.$check_def_local("toure2",$locals["toure2"]) == "number" ? $B.mul($B.$check_def_local("toure2",$locals["toure2"]),2) : new Number($B.mul($B.$check_def_local("toure2",$locals["toure2"]),2))): $B.rich_op("mul",$B.$check_def_local("toure2",$locals["toure2"]),2)), 1))), $locals["coup"], 2);
+
+                  $left = $locals_game_CalculScore_11["Score"]
+
+                  if(typeof $temp.valueOf() == "number" && $left.constructor === Number && Number.isSafeInteger($left+$temp)){
+                    (typeof $temp == "number" && typeof $left == "number") ? $locals_game_CalculScore_11["Score"]+=$temp : $locals_game_CalculScore_11["Score"] = new Number($left+$temp.valueOf())
+                  }
+
+                  else if(typeof $left == "string" && typeof $temp == "string"){
+                    $locals_game_CalculScore_11["Score"] = $left + $temp
+                  }
+
+                  else{
+                    var iadd = $B.$getattr($locals["Score"],"__iadd__", null)
+                    if(iadd === null){
+                      ;$locals.$line_info = "232,game";if($locals.$f_trace !== _b_.None){$B.trace_line()};_b_.None;
+                      $locals_game_CalculScore_11["Score"] = $B.add($locals_game_CalculScore_11["Score"], $temp);
+                    }else{
+                      ;$locals.$line_info = "232,game";if($locals.$f_trace !== _b_.None){$B.trace_line()};_b_.None;
+                      $locals_game_CalculScore_11["Score"] = iadd($temp)
+                      ;
+                    }
+                  }
+
+                  ;$locals.$line_info = "234,game";if($locals.$f_trace !== _b_.None){$B.trace_line()};_b_.None;
+
+                  if($B.$bool($B.$test_expr($B.$test_item($B.rich_comp("__gt__",$B.$call($locals_game["NombrePosition"])($B.$getitem($locals["Tour2"],$B.add(($B.$check_def_local("toure2",$locals["toure2"]).valueOf && typeof $B.$check_def_local("toure2",$locals["toure2"]).valueOf() == "number" ? (typeof $B.$check_def_local("toure2",$locals["toure2"]) == "number" ? $B.mul($B.$check_def_local("toure2",$locals["toure2"]),2) : new Number($B.mul($B.$check_def_local("toure2",$locals["toure2"]),2))): $B.rich_op("mul",$B.$check_def_local("toure2",$locals["toure2"]),2)), 1))),0))&&$B.$test_item($B.rich_comp("__gt__",$locals["Score"],$B.rich_op("truediv", $B.$check_def_local("best",$locals["best"]), 2)))))){
+                    ;$locals.$line_info = "235,game";if($locals.$f_trace !== _b_.None){$B.trace_line()};_b_.None;
+                    $locals_game_CalculScore_11["Tour3"] = $B.$call($locals_game["Eval"])($B.$getitem($locals["Tour2"],$B.add(($B.$check_def_local("toure2",$locals["toure2"]).valueOf && typeof $B.$check_def_local("toure2",$locals["toure2"]).valueOf() == "number" ? (typeof $B.$check_def_local("toure2",$locals["toure2"]) == "number" ? $B.mul($B.$check_def_local("toure2",$locals["toure2"]),2) : new Number($B.mul($B.$check_def_local("toure2",$locals["toure2"]),2))): $B.rich_op("mul",$B.$check_def_local("toure2",$locals["toure2"]),2)), 1)));
+                    if($locals["coup"] === undefined){
+                      throw $B.name_error('coup')
+                    }
+                    $left = $locals_game_CalculScore_11["coup"]
+                    ;$locals.$line_info = "236,game";if($locals.$f_trace !== _b_.None){$B.trace_line()};_b_.None;
+                    if($left.constructor === Number && Number.isSafeInteger($left-(1))){
+                      (typeof $left == "number") ? $locals_game_CalculScore_11["coup"]-=(1) : $locals_game_CalculScore_11["coup"] = new Number($left-(1))
+                    }else{
+                      var iadd = $B.$getattr($locals["coup"],"__isub__", null)
+                      if(iadd === null){
+                        ;$locals.$line_info = "236,game";if($locals.$f_trace !== _b_.None){$B.trace_line()};_b_.None;
+                        $locals_game_CalculScore_11["coup"] = $B.rich_op("sub", $locals_game_CalculScore_11["coup"], (1));
+                      }else{
+                        ;$locals.$line_info = "236,game";if($locals.$f_trace !== _b_.None){$B.trace_line()};_b_.None;
+                        $locals_game_CalculScore_11["coup"] = iadd((1))
+                        ;
+                      }
+                    }
+                    ;$locals.$line_info = "239,game";if($locals.$f_trace !== _b_.None){$B.trace_line()};_b_.None;
+                    var $no_break26 = true
+                    var $next_func_31 = $B.next_of($B.$call($B.$global_search("range", ["game_CalculScore_11", "game"]))($B.$call(($locals_game["int"] || _b_.int))($B.rich_op("truediv", $B.$call(($locals_game["len"] || _b_.len))($locals["Tour3"]), 2))))
+                    while(true){
+                      try{
+                        var $next_31 = $next_func_31()
+                      }catch(err){
+                        if($B.is_exc(err, [_b_.StopIteration])){
+                          break
+                        }else{
+                          $B.leave_frame({$locals, value: _b_.None});throw err
+                        }
+                      }
+                      $locals_game_CalculScore_11["toure3"] = $next_31
+
+                      ;$locals.$line_info = "240,game";if($locals.$f_trace !== _b_.None){$B.trace_line()};_b_.None;
+
+                      var $temp,$left;
+
+                      if($locals["Score"] === undefined){
+                        throw $B.name_error('Score')
+                      }
+
+                      $temp = $B.$call($locals_game["ScoreCounter"])($B.$call($locals_game["deepcopy"])($B.$getitem($locals["Tour3"],$B.add(($B.$check_def_local("toure3",$locals["toure3"]).valueOf && typeof $B.$check_def_local("toure3",$locals["toure3"]).valueOf() == "number" ? (typeof $B.$check_def_local("toure3",$locals["toure3"]) == "number" ? $B.mul($B.$check_def_local("toure3",$locals["toure3"]),2) : new Number($B.mul($B.$check_def_local("toure3",$locals["toure3"]),2))): $B.rich_op("mul",$B.$check_def_local("toure3",$locals["toure3"]),2)), 1))), $locals["coup"], 1);
+
+                      $left = $locals_game_CalculScore_11["Score"]
+
+                      if(typeof $temp.valueOf() == "number" && $left.constructor === Number && Number.isSafeInteger($left+$temp)){
+                        (typeof $temp == "number" && typeof $left == "number") ? $locals_game_CalculScore_11["Score"]+=$temp : $locals_game_CalculScore_11["Score"] = new Number($left+$temp.valueOf())
+                      }
+
+                      else if(typeof $left == "string" && typeof $temp == "string"){
+                        $locals_game_CalculScore_11["Score"] = $left + $temp
+                      }
+
+                      else{
+                        var iadd = $B.$getattr($locals["Score"],"__iadd__", null)
+                        if(iadd === null){
+                          ;$locals.$line_info = "240,game";if($locals.$f_trace !== _b_.None){$B.trace_line()};_b_.None;
+                          $locals_game_CalculScore_11["Score"] = $B.add($locals_game_CalculScore_11["Score"], $temp);
+                        }else{
+                          ;$locals.$line_info = "240,game";if($locals.$f_trace !== _b_.None){$B.trace_line()};_b_.None;
+                          $locals_game_CalculScore_11["Score"] = iadd($temp)
+                          ;
+                        }
+                      }
+
+                      ;$locals.$line_info = "242,game";if($locals.$f_trace !== _b_.None){$B.trace_line()};_b_.None;
+
+                      if($B.$bool($B.$test_expr($B.$test_item($B.rich_comp("__gt__",$B.$call($locals_game["NombrePosition"])($B.$getitem($locals["Tour3"],$B.add(($B.$check_def_local("toure3",$locals["toure3"]).valueOf && typeof $B.$check_def_local("toure3",$locals["toure3"]).valueOf() == "number" ? (typeof $B.$check_def_local("toure3",$locals["toure3"]) == "number" ? $B.mul($B.$check_def_local("toure3",$locals["toure3"]),2) : new Number($B.mul($B.$check_def_local("toure3",$locals["toure3"]),2))): $B.rich_op("mul",$B.$check_def_local("toure3",$locals["toure3"]),2)), 1))),0))&&$B.$test_item($B.rich_comp("__lt__",$locals["Score"],$B.rich_op("mul", $B.$check_def_local("best",$locals["best"]), $B.rich_op("truediv", 2, 3))))))){
+                        ;$locals.$line_info = "243,game";if($locals.$f_trace !== _b_.None){$B.trace_line()};_b_.None;
+                        $locals_game_CalculScore_11["Tour4"] = $B.$call($locals_game["Eval"])($B.$getitem($locals["Tour3"],$B.add(($B.$check_def_local("toure3",$locals["toure3"]).valueOf && typeof $B.$check_def_local("toure3",$locals["toure3"]).valueOf() == "number" ? (typeof $B.$check_def_local("toure3",$locals["toure3"]) == "number" ? $B.mul($B.$check_def_local("toure3",$locals["toure3"]),2) : new Number($B.mul($B.$check_def_local("toure3",$locals["toure3"]),2))): $B.rich_op("mul",$B.$check_def_local("toure3",$locals["toure3"]),2)), 1)));
+                        if($locals["coup"] === undefined){
+                          throw $B.name_error('coup')
+                        }
+                        $left = $locals_game_CalculScore_11["coup"]
+                        ;$locals.$line_info = "244,game";if($locals.$f_trace !== _b_.None){$B.trace_line()};_b_.None;
+                        if($left.constructor === Number && Number.isSafeInteger($left-(1))){
+                          (typeof $left == "number") ? $locals_game_CalculScore_11["coup"]-=(1) : $locals_game_CalculScore_11["coup"] = new Number($left-(1))
+                        }else{
+                          var iadd = $B.$getattr($locals["coup"],"__isub__", null)
+                          if(iadd === null){
+                            ;$locals.$line_info = "244,game";if($locals.$f_trace !== _b_.None){$B.trace_line()};_b_.None;
+                            $locals_game_CalculScore_11["coup"] = $B.rich_op("sub", $locals_game_CalculScore_11["coup"], (1));
+                          }else{
+                            ;$locals.$line_info = "244,game";if($locals.$f_trace !== _b_.None){$B.trace_line()};_b_.None;
+                            $locals_game_CalculScore_11["coup"] = iadd((1))
+                            ;
+                          }
+                        }
+                        ;$locals.$line_info = "248,game";if($locals.$f_trace !== _b_.None){$B.trace_line()};_b_.None;
+                        var $no_break27 = true
+                        var $next_func_32 = $B.next_of($B.$call($B.$global_search("range", ["game_CalculScore_11", "game"]))($B.$call(($locals_game["int"] || _b_.int))($B.rich_op("truediv", $B.$call(($locals_game["len"] || _b_.len))($locals["Tour4"]), 2))))
+                        while(true){
+                          try{
+                            var $next_32 = $next_func_32()
+                          }catch(err){
+                            if($B.is_exc(err, [_b_.StopIteration])){
+                              break
+                            }else{
+                              $B.leave_frame({$locals, value: _b_.None});throw err
+                            }
+                          }
+                          $locals_game_CalculScore_11["toure4"] = $next_32
+
+                          ;$locals.$line_info = "249,game";if($locals.$f_trace !== _b_.None){$B.trace_line()};_b_.None;
+
+                          var $temp,$left;
+
+                          if($locals["Score"] === undefined){
+                            throw $B.name_error('Score')
+                          }
+
+                          $temp = $B.$call($locals_game["ScoreCounter"])($B.$call($locals_game["deepcopy"])($B.$getitem($locals["Tour4"],$B.add(($B.$check_def_local("toure4",$locals["toure4"]).valueOf && typeof $B.$check_def_local("toure4",$locals["toure4"]).valueOf() == "number" ? (typeof $B.$check_def_local("toure4",$locals["toure4"]) == "number" ? $B.mul($B.$check_def_local("toure4",$locals["toure4"]),2) : new Number($B.mul($B.$check_def_local("toure4",$locals["toure4"]),2))): $B.rich_op("mul",$B.$check_def_local("toure4",$locals["toure4"]),2)), 1))), $locals["coup"], 2);
+
+                          $left = $locals_game_CalculScore_11["Score"]
+
+                          if(typeof $temp.valueOf() == "number" && $left.constructor === Number && Number.isSafeInteger($left+$temp)){
+                            (typeof $temp == "number" && typeof $left == "number") ? $locals_game_CalculScore_11["Score"]+=$temp : $locals_game_CalculScore_11["Score"] = new Number($left+$temp.valueOf())
+                          }
+
+                          else if(typeof $left == "string" && typeof $temp == "string"){
+                            $locals_game_CalculScore_11["Score"] = $left + $temp
+                          }
+
+                          else{
+                            var iadd = $B.$getattr($locals["Score"],"__iadd__", null)
+                            if(iadd === null){
+                              ;$locals.$line_info = "249,game";if($locals.$f_trace !== _b_.None){$B.trace_line()};_b_.None;
+                              $locals_game_CalculScore_11["Score"] = $B.add($locals_game_CalculScore_11["Score"], $temp);
+                            }else{
+                              ;$locals.$line_info = "249,game";if($locals.$f_trace !== _b_.None){$B.trace_line()};_b_.None;
+                              $locals_game_CalculScore_11["Score"] = iadd($temp)
+                              ;
+                            }
+                          }
+                          ;$locals.$line_info = "248,game";if($locals.$f_trace !== _b_.None){$B.trace_line()};_b_.None;
+                        }
+
+                      }
+                      ;$locals.$line_info = "239,game";if($locals.$f_trace !== _b_.None){$B.trace_line()};_b_.None;
+                    }
+
+                  }
+                  ;$locals.$line_info = "231,game";if($locals.$f_trace !== _b_.None){$B.trace_line()};_b_.None;
+                }
+
+                ;$locals.$line_info = "252,game";if($locals.$f_trace !== _b_.None){$B.trace_line()};_b_.None;
+                var $res = $locals["Score"];
+                if($locals.$f_trace !== _b_.None){
+                  $B.trace_return($res)
+                }
+                $B.leave_frame({$locals});
+                return $res;
+              }catch(err){
+                $B.set_exc(err)
+                if((! err.$in_trace_func) && $locals.$f_trace !== _b_.None){
+                  $locals.$f_trace = $B.trace_exception()
+                }
+                $B.leave_frame({$locals});throw err
+              }
+            }
+            CalculScore24.$is_func = true
+            CalculScore24.$infos = {
+              __name__:"CalculScore",
+              __qualname__:"CalculScore",
+              __defaults__ : _b_.None,
+              __kwdefaults__ : _b_.None,
+              __annotations__: {},
+              __dict__: $B.empty_dict(),
+              __doc__: $B.String("\n\
+    f( list , int , int ) -> int\n\
+    retourne le score de la position Grid en argument\n\
+    et des 3 coups suivants (mais plus est possible XD) "),
+              __module__ : "game",
+              __code__:{
+                co_argcount:3,
+                co_filename:$locals_game["__file__"] || "<string>",
+                co_firstlineno:216,
+                co_flags:67,
+                co_freevars: ["ScoreCounter","deepcopy","Eval","range","NombrePosition"],
+                co_kwonlyargcount:0,
+                co_name: "CalculScore",
+                co_nlocals: 11,
+                co_posonlyargcount: 0,
+                co_varnames: $B.fast_tuple(["Grid", "position", "best", "coup", "Score", "Tour2", "toure2", "Tour3", "toure3", "Tour4", "toure4"])
+              }
+            };_b_.None;
+            return CalculScore24
+          }
+          $locals_game["CalculScore"] = CalculScore$24({})
+          $locals_game["CalculScore"].$set_defaults = function(value){
+            return $locals_game["CalculScore"] = CalculScore$24(value)
+          }
+          ;$locals.$line_info = "261,game";if($locals.$f_trace !== _b_.None){$B.trace_line()};_b_.None;
+          var IA_EvaluPossibilite$28 = function($defaults){
+            function IA_EvaluPossibilite28(_gridEval){
+              var $locals_game_IA_EvaluPossibilite_12 = {},
+                  $locals = $locals_game_IA_EvaluPossibilite_12;
+              var $len = arguments.length;
+              var last_arg;if($len > 0 && ((last_arg = arguments[$len - 1]) !== undefined) && last_arg.$nat !== undefined){
+                $locals_game_IA_EvaluPossibilite_12 = $locals = $B.args("IA_EvaluPossibilite", 1, {"gridEval":null}, ["gridEval"], arguments, $defaults, null, null);
+              }else{
+                if($len == 1){
+                  $locals_game_IA_EvaluPossibilite_12 = $locals = $B.conv_undef({"gridEval": _gridEval})
+                }else if($len > 1){
+                  $B.wrong_nb_args("IA_EvaluPossibilite", $len, 1, ["gridEval"])
+                }else if($len + Object.keys($defaults).length < 1){
+                  $B.wrong_nb_args("IA_EvaluPossibilite", $len, 1, ["gridEval"])
+                }else{
+                  $locals_game_IA_EvaluPossibilite_12 = $locals = $B.conv_undef({"gridEval": _gridEval})
+                  var defparams = ["gridEval"]
+                  for(var i = $len; i < defparams.length; i++){
+                    $locals[defparams[i]] = $defaults[defparams[i]]
+                  }
+                }
+              }
+              $locals.$line_info = "261,game"
+              var $top_frame = ["game_IA_EvaluPossibilite_12", $locals,"game", $locals_game, IA_EvaluPossibilite28]
+              $locals.$f_trace = $B.enter_frame($top_frame)
+              var $stack_length = $B.frames_stack.length;
+              try{
+                $B.js_this = this;
+                ;$locals.$line_info = "262,game";if($locals.$f_trace !== _b_.None){$B.trace_line()};_b_.None;
+                $B.String("\n\
+    f( list ) -> list\n\
+    retourne les scores calcules a partir des evaluations de la\n\
+    fonction Eval( list ) et CalculScore( list , int , int )");
+                ;$locals.$line_info = "266,game";if($locals.$f_trace !== _b_.None){$B.trace_line()};_b_.None;
+                $locals_game_IA_EvaluPossibilite_12["ScoreEval"] = $B.$list([]);
+                ;$locals.$line_info = "267,game";if($locals.$f_trace !== _b_.None){$B.trace_line()};_b_.None;
+                $locals_game_IA_EvaluPossibilite_12["Tour1"] = $B.$call($locals_game["Eval"])($B.$check_def_local("gridEval",$locals["gridEval"]));
+                ;$locals.$line_info = "268,game";if($locals.$f_trace !== _b_.None){$B.trace_line()};_b_.None;
+                $locals_game_IA_EvaluPossibilite_12["Best"] = -100000000;
+                ;$locals.$line_info = "269,game";if($locals.$f_trace !== _b_.None){$B.trace_line()};_b_.None;
+                var $no_break29 = true
+                var $next_func_33 = $B.next_of($B.$call($B.$global_search("range", ["game_IA_EvaluPossibilite_12", "game"]))($B.$call(($locals_game["int"] || _b_.int))($B.rich_op("truediv", $B.$call(($locals_game["len"] || _b_.len))($locals["Tour1"]), 2))))
+                while(true){
+                  try{
+                    var $next_33 = $next_func_33()
+                  }catch(err){
+                    if($B.is_exc(err, [_b_.StopIteration])){
+                      break
+                    }else{
+                      $B.leave_frame({$locals, value: _b_.None});throw err
+                    }
+                  }
+                  $locals_game_IA_EvaluPossibilite_12["toure1"] = $next_33
+
+                  ;$locals.$line_info = "272,game";if($locals.$f_trace !== _b_.None){$B.trace_line()};_b_.None;
+
+                  $locals_game_IA_EvaluPossibilite_12["ScoreCoup"] = $B.$call($locals_game["CalculScore"])($locals["Tour1"], $B.$check_def_local("toure1",$locals["toure1"]), $locals["Best"]);
+
+                  ;$locals.$line_info = "273,game";if($locals.$f_trace !== _b_.None){$B.trace_line()};_b_.None;
+
+                  if($B.$bool(typeof $locals["ScoreCoup"]!="object" && typeof $locals["ScoreCoup"]!="function" && typeof $locals["ScoreCoup"] == typeof $locals["Best"] ? $locals["ScoreCoup"]>$locals["Best"] : $B.rich_comp("__gt__",$locals["ScoreCoup"],$locals["Best"]))){
+                    ;$locals.$line_info = "274,game";if($locals.$f_trace !== _b_.None){$B.trace_line()};_b_.None;
+                    $locals_game_IA_EvaluPossibilite_12["Best"] = $locals["ScoreCoup"];
+                  }
+
+                  ;$locals.$line_info = "275,game";if($locals.$f_trace !== _b_.None){$B.trace_line()};_b_.None;
+
+                  var $temp,$left;
+
+                  if($locals["ScoreEval"] === undefined){
+                    throw $B.name_error('ScoreEval')
+                  }
+
+                  $temp = $B.$list([$B.$getitem($locals["Tour1"],($B.$check_def_local("toure1",$locals["toure1"]).valueOf && typeof $B.$check_def_local("toure1",$locals["toure1"]).valueOf() == "number" ? (typeof $B.$check_def_local("toure1",$locals["toure1"]) == "number" ? $B.mul($B.$check_def_local("toure1",$locals["toure1"]),2) : new Number($B.mul($B.$check_def_local("toure1",$locals["toure1"]),2))): $B.rich_op("mul",$B.$check_def_local("toure1",$locals["toure1"]),2))),$locals["ScoreCoup"]]);
+
+                  $left = $locals_game_IA_EvaluPossibilite_12["ScoreEval"]
+
+                  if(typeof $temp.valueOf() == "number" && $left.constructor === Number && Number.isSafeInteger($left+$temp)){
+                    (typeof $temp == "number" && typeof $left == "number") ? $locals_game_IA_EvaluPossibilite_12["ScoreEval"]+=$temp : $locals_game_IA_EvaluPossibilite_12["ScoreEval"] = new Number($left+$temp.valueOf())
+                  }
+
+                  else if(typeof $left == "string" && typeof $temp == "string"){
+                    $locals_game_IA_EvaluPossibilite_12["ScoreEval"] = $left + $temp
+                  }
+
+                  else{
+                    var iadd = $B.$getattr($locals["ScoreEval"],"__iadd__", null)
+                    if(iadd === null){
+                      ;$locals.$line_info = "275,game";if($locals.$f_trace !== _b_.None){$B.trace_line()};_b_.None;
+                      $locals_game_IA_EvaluPossibilite_12["ScoreEval"] = $B.add($locals_game_IA_EvaluPossibilite_12["ScoreEval"], $temp);
+                    }else{
+                      ;$locals.$line_info = "275,game";if($locals.$f_trace !== _b_.None){$B.trace_line()};_b_.None;
+                      $locals_game_IA_EvaluPossibilite_12["ScoreEval"] = iadd($temp)
+                      ;
+                    }
+                  }
+                  ;$locals.$line_info = "269,game";if($locals.$f_trace !== _b_.None){$B.trace_line()};_b_.None;
+                }
+
+                ;$locals.$line_info = "276,game";if($locals.$f_trace !== _b_.None){$B.trace_line()};_b_.None;
+                $B.$call(($locals_game["print"] || _b_.print))($locals["ScoreEval"]);
+                ;$locals.$line_info = "277,game";if($locals.$f_trace !== _b_.None){$B.trace_line()};_b_.None;
+                var $res = $locals["ScoreEval"];
+                if($locals.$f_trace !== _b_.None){
+                  $B.trace_return($res)
+                }
+                $B.leave_frame({$locals});
+                return $res;
+              }catch(err){
+                $B.set_exc(err)
+                if((! err.$in_trace_func) && $locals.$f_trace !== _b_.None){
+                  $locals.$f_trace = $B.trace_exception()
+                }
+                $B.leave_frame({$locals});throw err
+              }
+            }
+            IA_EvaluPossibilite28.$is_func = true
+            IA_EvaluPossibilite28.$infos = {
+              __name__:"IA_EvaluPossibilite",
+              __qualname__:"IA_EvaluPossibilite",
+              __defaults__ : _b_.None,
+              __kwdefaults__ : _b_.None,
+              __annotations__: {},
+              __dict__: $B.empty_dict(),
+              __doc__: $B.String("\n\
+    f( list ) -> list\n\
+    retourne les scores calcules a partir des evaluations de la\n\
+    fonction Eval( list ) et CalculScore( list , int , int )"),
+              __module__ : "game",
+              __code__:{
+                co_argcount:1,
+                co_filename:$locals_game["__file__"] || "<string>",
+                co_firstlineno:261,
+                co_flags:67,
+                co_freevars: ["Eval","range","CalculScore"],
+                co_kwonlyargcount:0,
+                co_name: "IA_EvaluPossibilite",
+                co_nlocals: 6,
+                co_posonlyargcount: 0,
+                co_varnames: $B.fast_tuple(["gridEval", "ScoreEval", "Tour1", "Best", "toure1", "ScoreCoup"])
+              }
+            };_b_.None;
+            return IA_EvaluPossibilite28
+          }
+          $locals_game["IA_EvaluPossibilite"] = IA_EvaluPossibilite$28({})
+          $locals_game["IA_EvaluPossibilite"].$set_defaults = function(value){
+            return $locals_game["IA_EvaluPossibilite"] = IA_EvaluPossibilite$28(value)
+          }
+          ;$locals.$line_info = "280,game";if($locals.$f_trace !== _b_.None){$B.trace_line()};_b_.None;
+          var IA_forte$30 = function($defaults){
+            function IA_forte30(_IA){
+              var $locals_game_IA_forte_13 = {},
+                  $locals = $locals_game_IA_forte_13;
+              var $len = arguments.length;
+              var last_arg;if($len > 0 && ((last_arg = arguments[$len - 1]) !== undefined) && last_arg.$nat !== undefined){
+                $locals_game_IA_forte_13 = $locals = $B.args("IA_forte", 1, {"IA":null}, ["IA"], arguments, $defaults, null, null);
+              }else{
+                if($len == 1){
+                  $locals_game_IA_forte_13 = $locals = $B.conv_undef({"IA": _IA})
+                }else if($len > 1){
+                  $B.wrong_nb_args("IA_forte", $len, 1, ["IA"])
+                }else if($len + Object.keys($defaults).length < 1){
+                  $B.wrong_nb_args("IA_forte", $len, 1, ["IA"])
+                }else{
+                  $locals_game_IA_forte_13 = $locals = $B.conv_undef({"IA": _IA})
+                  var defparams = ["IA"]
+                  for(var i = $len; i < defparams.length; i++){
+                    $locals[defparams[i]] = $defaults[defparams[i]]
+                  }
+                }
+              }
+              $locals.$line_info = "280,game"
+              var $top_frame = ["game_IA_forte_13", $locals,"game", $locals_game, IA_forte30]
+              $locals.$f_trace = $B.enter_frame($top_frame)
+              var $stack_length = $B.frames_stack.length;
+              try{
+                $B.js_this = this;
+                ;$locals.$line_info = "281,game";if($locals.$f_trace !== _b_.None){$B.trace_line()};_b_.None;
+                $B.String("\n\
+    f( list ) -> list\n\
+    retourne le meilleur score des positions (et si plusieurs on le meme\n\
+    c'est de l'aleatoire qui decide pour eviter les repetitions)\n\
+    calcule avec IA_EvaluPossibilite( list ) et utilise\n\
+    Remplace( int , int , list )");
+                ;$locals.$line_info = "288,game";if($locals.$f_trace !== _b_.None){$B.trace_line()};_b_.None;
+                $locals_game_IA_forte_13["AllScore"] = $B.$call($locals_game["IA_EvaluPossibilite"])($B.$check_def_local("IA",$locals["IA"]));
+                ;$locals.$line_info = "289,game";if($locals.$f_trace !== _b_.None){$B.trace_line()};_b_.None;
+                $locals_game_IA_forte_13["best"] = -1000000000;
+                ;$locals.$line_info = "290,game";if($locals.$f_trace !== _b_.None){$B.trace_line()};_b_.None;
+                var $no_break31 = true
+                var $next_func_34 = $B.next_of($B.$call($B.$global_search("range", ["game_IA_forte_13", "game"]))($B.$call(($locals_game["int"] || _b_.int))($B.rich_op("truediv", $B.$call(($locals_game["len"] || _b_.len))($locals["AllScore"]), 2))))
+                while(true){
+                  try{
+                    var $next_34 = $next_func_34()
+                  }catch(err){
+                    if($B.is_exc(err, [_b_.StopIteration])){
+                      break
+                    }else{
+                      $B.leave_frame({$locals, value: _b_.None});throw err
+                    }
+                  }
+                  $locals_game_IA_forte_13["evalu"] = $next_34
+
+                  ;$locals.$line_info = "291,game";if($locals.$f_trace !== _b_.None){$B.trace_line()};_b_.None;
+
+                  if($B.$bool($B.rich_comp("__gt__",$B.$getitem($locals["AllScore"],$B.add(($B.$check_def_local("evalu",$locals["evalu"]).valueOf && typeof $B.$check_def_local("evalu",$locals["evalu"]).valueOf() == "number" ? (typeof $B.$check_def_local("evalu",$locals["evalu"]) == "number" ? $B.mul($B.$check_def_local("evalu",$locals["evalu"]),2) : new Number($B.mul($B.$check_def_local("evalu",$locals["evalu"]),2))): $B.rich_op("mul",$B.$check_def_local("evalu",$locals["evalu"]),2)), 1)),$locals["best"]))){
+                    ;$locals.$line_info = "292,game";if($locals.$f_trace !== _b_.None){$B.trace_line()};_b_.None;
+                    $locals_game_IA_forte_13["best"] = $B.$getitem($locals["AllScore"],$B.add(($B.$check_def_local("evalu",$locals["evalu"]).valueOf && typeof $B.$check_def_local("evalu",$locals["evalu"]).valueOf() == "number" ? (typeof $B.$check_def_local("evalu",$locals["evalu"]) == "number" ? $B.mul($B.$check_def_local("evalu",$locals["evalu"]),2) : new Number($B.mul($B.$check_def_local("evalu",$locals["evalu"]),2))): $B.rich_op("mul",$B.$check_def_local("evalu",$locals["evalu"]),2)), 1));
+                    ;$locals.$line_info = "293,game";if($locals.$f_trace !== _b_.None){$B.trace_line()};_b_.None;
+                    $locals_game_IA_forte_13["bestPosition"] = $B.$getitem($locals["AllScore"],($B.$check_def_local("evalu",$locals["evalu"]).valueOf && typeof $B.$check_def_local("evalu",$locals["evalu"]).valueOf() == "number" ? (typeof $B.$check_def_local("evalu",$locals["evalu"]) == "number" ? $B.mul($B.$check_def_local("evalu",$locals["evalu"]),2) : new Number($B.mul($B.$check_def_local("evalu",$locals["evalu"]),2))): $B.rich_op("mul",$B.$check_def_local("evalu",$locals["evalu"]),2)));
+                  }
+
+                  else if($B.$bool(($B.set_line("294,game_IA_forte_13")) && $B.$test_expr($B.$test_item($B.rich_comp("__eq__",$B.$getitem($locals["AllScore"],$B.add(($B.$check_def_local("evalu",$locals["evalu"]).valueOf && typeof $B.$check_def_local("evalu",$locals["evalu"]).valueOf() == "number" ? (typeof $B.$check_def_local("evalu",$locals["evalu"]) == "number" ? $B.mul($B.$check_def_local("evalu",$locals["evalu"]),2) : new Number($B.mul($B.$check_def_local("evalu",$locals["evalu"]),2))): $B.rich_op("mul",$B.$check_def_local("evalu",$locals["evalu"]),2)), 1)),$locals["best"]))&&$B.$test_item($B.rich_comp("__eq__",$B.$call($locals_game["randrange"])(0, 1),0))))){
+                    ;$locals.$line_info = "295,game";if($locals.$f_trace !== _b_.None){$B.trace_line()};_b_.None;
+                    $locals_game_IA_forte_13["bestPosition"] = $B.$getitem($locals["AllScore"],($B.$check_def_local("evalu",$locals["evalu"]).valueOf && typeof $B.$check_def_local("evalu",$locals["evalu"]).valueOf() == "number" ? (typeof $B.$check_def_local("evalu",$locals["evalu"]) == "number" ? $B.mul($B.$check_def_local("evalu",$locals["evalu"]),2) : new Number($B.mul($B.$check_def_local("evalu",$locals["evalu"]),2))): $B.rich_op("mul",$B.$check_def_local("evalu",$locals["evalu"]),2)));
+                  }
+                  ;$locals.$line_info = "290,game";if($locals.$f_trace !== _b_.None){$B.trace_line()};_b_.None;
+                }
+
+                ;$locals.$line_info = "296,game";if($locals.$f_trace !== _b_.None){$B.trace_line()};_b_.None;
+                $B.$call(($locals_game["print"] || _b_.print))($B.add($B.String("l'IA jou en "), $B.$call(($locals_game["str"] || _b_.str))($B.$check_def_local("bestPosition",$locals["bestPosition"]))));
+                ;$locals.$line_info = "297,game";if($locals.$f_trace !== _b_.None){$B.trace_line()};_b_.None;
+                var $res = $B.$call($locals_game["Remplace"])($B.$call(($locals_game["int"] || _b_.int))($B.$getitem($B.$check_def_local("bestPosition",$locals["bestPosition"]),0)), $B.$call(($locals_game["int"] || _b_.int))($B.$getitem($B.$check_def_local("bestPosition",$locals["bestPosition"]),1)), $B.$check_def_local("IA",$locals["IA"]));
+                if($locals.$f_trace !== _b_.None){
+                  $B.trace_return($res)
+                }
+                $B.leave_frame({$locals});
+                return $res;
+              }catch(err){
+                $B.set_exc(err)
+                if((! err.$in_trace_func) && $locals.$f_trace !== _b_.None){
+                  $locals.$f_trace = $B.trace_exception()
+                }
+                $B.leave_frame({$locals});throw err
+              }
+            }
+            IA_forte30.$is_func = true
+            IA_forte30.$infos = {
+              __name__:"IA_forte",
+              __qualname__:"IA_forte",
+              __defaults__ : _b_.None,
+              __kwdefaults__ : _b_.None,
+              __annotations__: {},
+              __dict__: $B.empty_dict(),
+              __doc__: $B.String("\n\
+    f( list ) -> list\n\
+    retourne le meilleur score des positions (et si plusieurs on le meme\n\
+    c'est de l'aleatoire qui decide pour eviter les repetitions)\n\
+    calcule avec IA_EvaluPossibilite( list ) et utilise\n\
+    Remplace( int , int , list )"),
+              __module__ : "game",
+              __code__:{
+                co_argcount:1,
+                co_filename:$locals_game["__file__"] || "<string>",
+                co_firstlineno:280,
+                co_flags:67,
+                co_freevars: ["IA_EvaluPossibilite","range","randrange","Remplace"],
+                co_kwonlyargcount:0,
+                co_name: "IA_forte",
+                co_nlocals: 5,
+                co_posonlyargcount: 0,
+                co_varnames: $B.fast_tuple(["IA", "AllScore", "best", "evalu", "bestPosition"])
+              }
+            };_b_.None;
+            return IA_forte30
+          }
+          $locals_game["IA_forte"] = IA_forte$30({})
+          $locals_game["IA_forte"].$set_defaults = function(value){
+            return $locals_game["IA_forte"] = IA_forte$30(value)
+          }
+          ;$locals.$line_info = "332,game";if($locals.$f_trace !== _b_.None){$B.trace_line()};_b_.None;
+          var Game_IA$32 = function($defaults){
+            function Game_IA32(_x_size, _y_size){
+              var $locals_game_Game_IA_14 = {},
+                  $locals = $locals_game_Game_IA_14;
+              var $len = arguments.length;
+              var last_arg;if($len > 0 && ((last_arg = arguments[$len - 1]) !== undefined) && last_arg.$nat !== undefined){
+                $locals_game_Game_IA_14 = $locals = $B.args("Game_IA", 2, {"x_size":null, "y_size":null}, ["x_size", "y_size"], arguments, $defaults, null, null);
+              }else{
+                if($len == 2){
+                  $locals_game_Game_IA_14 = $locals = $B.conv_undef({"x_size": _x_size, "y_size": _y_size})
+                }else if($len > 2){
+                  $B.wrong_nb_args("Game_IA", $len, 2, ["x_size","y_size"])
+                }else if($len + Object.keys($defaults).length < 2){
+                  $B.wrong_nb_args("Game_IA", $len, 2, ["x_size","y_size"])
+                }else{
+                  $locals_game_Game_IA_14 = $locals = $B.conv_undef({"x_size": _x_size, "y_size": _y_size})
+                  var defparams = ["x_size","y_size"]
+                  for(var i = $len; i < defparams.length; i++){
+                    $locals[defparams[i]] = $defaults[defparams[i]]
+                  }
+                }
+              }
+              $locals.$line_info = "332,game"
+              var $top_frame = ["game_Game_IA_14", $locals,"game", $locals_game, Game_IA32]
+              $locals.$f_trace = $B.enter_frame($top_frame)
+              var $stack_length = $B.frames_stack.length;
+              try{
+                $B.js_this = this;
+                ;$locals.$line_info = "333,game";if($locals.$f_trace !== _b_.None){$B.trace_line()};_b_.None;
+                $B.String("\n\
+    permet de jouer contre une IA jouant aleatoirement pour l'instant\n\
+    fait l'affichage de la partie\n\
+    utilise Contient( int , int , list ), possible( int , int or str , list )\n\
+    et Remplace( int , int , list ) et IA_nul( list ) et ResetGrid( int , int )");
+                ;$locals.$line_info = "341,game";if($locals.$f_trace !== _b_.None){$B.trace_line()};_b_.None;
+                $locals_game_Game_IA_14["grid"] = $B.$call(($locals_game["list"] || _b_.list))($B.$call($locals_game["ResetGrid"])($B.$check_def_local("x_size",$locals["x_size"]), $B.$check_def_local("y_size",$locals["y_size"])));
+                ;$locals.$line_info = "342,game";if($locals.$f_trace !== _b_.None){$B.trace_line()};_b_.None;
+                $B.$call(($locals_game["print"] || _b_.print))($B.String("Entrez la difficulter de l'IA(max=10 / min=1, difficulter aleatoire par defaut)"));
+                ;$locals.$line_info = "343,game";if($locals.$f_trace !== _b_.None){$B.trace_line()};_b_.None;
+                $B.$call(($locals_game["print"] || _b_.print))($B.String("/!\\ SI LE PLATEAU A UNE TAILLE SUPERIEUR A 10x10 N'UTILISEZ PAS L'IA FORTE !!"));
+                ;$locals.$line_info = "344,game";if($locals.$f_trace !== _b_.None){$B.trace_line()};_b_.None;
+                $locals_game_Game_IA_14["difficulter"] = $B.$call(($locals_game["input"] || _b_.input))();
+                ;$locals.$line_info = "345,game";if($locals.$f_trace !== _b_.None){$B.trace_line()};_b_.None;
+                if($B.$bool(!$B.$bool($B.$call($locals_game["VerifInput"])($locals["difficulter"], 10)))){
+                  ;$locals.$line_info = "346,game";if($locals.$f_trace !== _b_.None){$B.trace_line()};_b_.None;
+                  $locals_game_Game_IA_14["difficulter"] = $B.$call(($locals_game["int"] || _b_.int))($locals["difficulter"]);
+                }else{
+                  ;$locals.$line_info = "348,game";if($locals.$f_trace !== _b_.None){$B.trace_line()};_b_.None;
+                  if($B.$bool($B.rich_comp("__lt__",($B.$check_def_local("x_size",$locals["x_size"]).valueOf && typeof $B.$check_def_local("x_size",$locals["x_size"]).valueOf() == "number" && $B.$check_def_local("y_size",$locals["y_size"]).valueOf && typeof $B.$check_def_local("y_size",$locals["y_size"]).valueOf() == "number" ? (typeof $B.$check_def_local("x_size",$locals["x_size"]) == "number" && typeof $B.$check_def_local("y_size",$locals["y_size"]) == "number" ? $B.mul($B.$check_def_local("x_size",$locals["x_size"]),$B.$check_def_local("y_size",$locals["y_size"])) : new Number($B.mul($B.$check_def_local("x_size",$locals["x_size"]),$B.$check_def_local("y_size",$locals["y_size"])))): $B.rich_op("mul",$B.$check_def_local("x_size",$locals["x_size"]),$B.$check_def_local("y_size",$locals["y_size"]))),65))){
+                    ;$locals.$line_info = "349,game";if($locals.$f_trace !== _b_.None){$B.trace_line()};_b_.None;
+                    $locals_game_Game_IA_14["difficulter"] = $B.$call($locals_game["randrange"])(1, 10);
+                  }else{
+                    ;$locals.$line_info = "351,game";if($locals.$f_trace !== _b_.None){$B.trace_line()};_b_.None;
+                    $locals_game_Game_IA_14["difficulter"] = 1;
+                  }
+                }
+                ;$locals.$line_info = "352,game";if($locals.$f_trace !== _b_.None){$B.trace_line()};_b_.None;
+                $B.$call(($locals_game["print"] || _b_.print))($B.add($B.String("Difficulter choisie : "), $B.$call(($locals_game["str"] || _b_.str))($locals["difficulter"])));
+                ;$locals.$line_info = "353,game";if($locals.$f_trace !== _b_.None){$B.trace_line()};_b_.None;
+                $locals_game_Game_IA_14["joueur"] = $B.$call($locals_game["randrange"])(0, 1);
+                ;$locals.$line_info = "354,game";if($locals.$f_trace !== _b_.None){$B.trace_line()};_b_.None;
+                if($B.$bool((typeof $locals["joueur"] == "number" ? $locals["joueur"]==1 : $B.rich_comp("__eq__",$locals["joueur"],1)))){
+                  ;$locals.$line_info = "355,game";if($locals.$f_trace !== _b_.None){$B.trace_line()};_b_.None;
+                  $B.$call(($locals_game["print"] || _b_.print))($B.String("L'IA commence"));
+                }else{
+                  ;$locals.$line_info = "357,game";if($locals.$f_trace !== _b_.None){$B.trace_line()};_b_.None;
+                  $B.$call(($locals_game["print"] || _b_.print))($B.String("A vous de jouer"));
+                }
+                var $no_break33 = true
+                ;$locals.$line_info = "361,game";if($locals.$f_trace !== _b_.None){$B.trace_line()};_b_.None;
+                while($B.$bool($no_break33 && $B.$call($locals_game["Contient"])($locals["grid"]))){
+                  ;$locals.$line_info = "362,game";if($locals.$f_trace !== _b_.None){$B.trace_line()};_b_.None;
+                  if($B.$bool((typeof $locals["joueur"] == "number" ? $locals["joueur"]==0 : $B.rich_comp("__eq__",$locals["joueur"],0)))){
+                    ;$locals.$line_info = "364,game";if($locals.$f_trace !== _b_.None){$B.trace_line()};_b_.None;
+                    $locals_game_Game_IA_14["x"] = $B.String("no");
+                    ;$locals.$line_info = "365,game";if($locals.$f_trace !== _b_.None){$B.trace_line()};_b_.None;
+                    $locals_game_Game_IA_14["y"] = 0;
+                    var $no_break34 = true
+                    ;$locals.$line_info = "366,game";if($locals.$f_trace !== _b_.None){$B.trace_line()};_b_.None;
+                    while($B.$bool($no_break34 && $B.$call($locals_game["possible"])($locals["x"], $locals["y"], $locals["grid"]))){
+                      ;$locals.$line_info = "367,game";if($locals.$f_trace !== _b_.None){$B.trace_line()};_b_.None;
+                      if($B.$bool((typeof $locals["x"] == "string" ? $locals["x"]!=$B.String("no") : $B.rich_comp("__ne__",$locals["x"],$B.String("no"))))){
+                        ;$locals.$line_info = "368,game";if($locals.$f_trace !== _b_.None){$B.trace_line()};_b_.None;
+                        $B.$call(($locals_game["print"] || _b_.print))($B.String("mauvaise entre"));
+                      }
+                      ;$locals.$line_info = "369,game";if($locals.$f_trace !== _b_.None){$B.trace_line()};_b_.None;
+                      $B.$call($locals_game["MontreJeu"])($locals["grid"]);
+                      ;$locals.$line_info = "370,game";if($locals.$f_trace !== _b_.None){$B.trace_line()};_b_.None;
+                      $B.$call(($locals_game["print"] || _b_.print))($B.add($B.String("joueur: "), $B.$call(($locals_game["str"] || _b_.str))($B.add($locals["joueur"], 1))));
+                      ;$locals.$line_info = "371,game";if($locals.$f_trace !== _b_.None){$B.trace_line()};_b_.None;
+                      $B.$call(($locals_game["print"] || _b_.print))($B.String("Quelle valeur de x? "));
+                      ;$locals.$line_info = "372,game";if($locals.$f_trace !== _b_.None){$B.trace_line()};_b_.None;
+                      $locals_game_Game_IA_14["x"] = $B.$call(($locals_game["input"] || _b_.input))();
+                      ;$locals.$line_info = "373,game";if($locals.$f_trace !== _b_.None){$B.trace_line()};_b_.None;
+                      $B.$call(($locals_game["print"] || _b_.print))($B.String("Quelle valeur de y? "));
+                      ;$locals.$line_info = "374,game";if($locals.$f_trace !== _b_.None){$B.trace_line()};_b_.None;
+                      $locals_game_Game_IA_14["y"] = $B.$call(($locals_game["input"] || _b_.input))();
+                      $locals.$line_info = "366,game";if($locals.$f_trace !== _b_.None){
+                        $B.trace_line()};_b_.None;
+                      }
+                      ;$locals.$line_info = "377,game";if($locals.$f_trace !== _b_.None){$B.trace_line()};_b_.None;
+                      $locals_game_Game_IA_14["grid"] = $B.$call($locals_game["Remplace"])($B.$call(($locals_game["int"] || _b_.int))($locals["x"]), $B.$call(($locals_game["int"] || _b_.int))($locals["y"]), $B.$call($locals_game["deepcopy"])($locals["grid"]));
+                    }else{
+                      ;$locals.$line_info = "379,game";if($locals.$f_trace !== _b_.None){$B.trace_line()};_b_.None;
+                      $B.$call(($locals_game["print"] || _b_.print))($B.String("Tour de l'IA"));
+                      ;$locals.$line_info = "380,game";if($locals.$f_trace !== _b_.None){$B.trace_line()};_b_.None;
+                      if($B.$bool($B.$test_expr($B.$test_item($B.rich_comp("__eq__",$B.$call($locals_game["randrange"])(1, $locals["difficulter"]),0))&&$B.$test_item((typeof $locals["difficulter"] == "number" ? $locals["difficulter"]!=10 : $B.rich_comp("__ne__",$locals["difficulter"],10)))))){
+                        ;$locals.$line_info = "382,game";if($locals.$f_trace !== _b_.None){$B.trace_line()};_b_.None;
+                        $locals_game_Game_IA_14["grid"] = $B.$call($locals_game["IA_aleatoire"])($locals["grid"]);
+                      }else{
+                        ;$locals.$line_info = "385,game";if($locals.$f_trace !== _b_.None){$B.trace_line()};_b_.None;
+                        $locals_game_Game_IA_14["t"] = $B.$call($B.$global_search("time", ["game_Game_IA_14", "game"]))();
+                        ;$locals.$line_info = "386,game";if($locals.$f_trace !== _b_.None){$B.trace_line()};_b_.None;
+                        $locals_game_Game_IA_14["grid"] = $B.$call($locals_game["IA_forte"])($B.$call($locals_game["deepcopy"])($locals["grid"]));
+                        ;$locals.$line_info = "387,game";if($locals.$f_trace !== _b_.None){$B.trace_line()};_b_.None;
+                        $B.$call(($locals_game["print"] || _b_.print))($B.rich_op("sub", $B.$call($B.$global_search("time", ["game_Game_IA_14", "game"]))(), $locals["t"]));
+                      }
+                    }
+                    ;$locals.$line_info = "388,game";if($locals.$f_trace !== _b_.None){$B.trace_line()};_b_.None;
+                    $locals_game_Game_IA_14["joueur"] = ($locals["joueur"].valueOf && typeof $locals["joueur"].valueOf() == "number" ? (typeof $locals["joueur"] == "number" ? $B.sub(1,$locals["joueur"]) : new Number($B.sub(1,$locals["joueur"]))): $B.rich_op("sub",1,$locals["joueur"]));
+                    $locals.$line_info = "361,game";if($locals.$f_trace !== _b_.None){
+                      $B.trace_line()};_b_.None;
+                    }
+                    ;$locals.$line_info = "389,game";if($locals.$f_trace !== _b_.None){$B.trace_line()};_b_.None;
+                    $B.$call($locals_game["MontreJeu"])($locals["grid"]);
+                    ;$locals.$line_info = "390,game";if($locals.$f_trace !== _b_.None){$B.trace_line()};_b_.None;
+                    if($B.$bool((typeof $locals["joueur"] == "number" ? $locals["joueur"]==0 : $B.rich_comp("__eq__",$locals["joueur"],0)))){
+                      ;$locals.$line_info = "391,game";if($locals.$f_trace !== _b_.None){$B.trace_line()};_b_.None;
+                      $B.$call(($locals_game["print"] || _b_.print))($B.String("Vous avez gagner!!!!"));
+                    }else{
+                      ;$locals.$line_info = "393,game";if($locals.$f_trace !== _b_.None){$B.trace_line()};_b_.None;
+                      $B.$call(($locals_game["print"] || _b_.print))($B.String("L'IA a gagner !!"));
+                    }
+                    if($locals.$f_trace !== _b_.None){
+                      $B.trace_return(_b_.None)
+                    }
+                    $B.leave_frame({$locals});return _b_.None
+                  }catch(err){
+                    $B.set_exc(err)
+                    if((! err.$in_trace_func) && $locals.$f_trace !== _b_.None){
+                      $locals.$f_trace = $B.trace_exception()
+                    }
+                    $B.leave_frame({$locals});throw err
+                  }
+                }
+                Game_IA32.$is_func = true
+                Game_IA32.$infos = {
+                  __name__:"Game_IA",
+                  __qualname__:"Game_IA",
+                  __defaults__ : _b_.None,
+                  __kwdefaults__ : _b_.None,
+                  __annotations__: {},
+                  __dict__: $B.empty_dict(),
+                  __doc__: $B.String("\n\
+    permet de jouer contre une IA jouant aleatoirement pour l'instant\n\
+    fait l'affichage de la partie\n\
+    utilise Contient( int , int , list ), possible( int , int or str , list )\n\
+    et Remplace( int , int , list ) et IA_nul( list ) et ResetGrid( int , int )"),
+                  __module__ : "game",
+                  __code__:{
+                    co_argcount:2,
+                    co_filename:$locals_game["__file__"] || "<string>",
+                    co_firstlineno:332,
+                    co_flags:67,
+                    co_freevars: ["ResetGrid","VerifInput","randrange","Contient","possible","MontreJeu","Remplace","deepcopy","IA_aleatoire","time","IA_forte"],
+                    co_kwonlyargcount:0,
+                    co_name: "Game_IA",
+                    co_nlocals: 8,
+                    co_posonlyargcount: 0,
+                    co_varnames: $B.fast_tuple(["x_size", "y_size", "grid", "difficulter", "joueur", "x", "y", "t"])
+                  }
+                };_b_.None;
+                return Game_IA32
+              }
+              $locals_game["Game_IA"] = Game_IA$32({})
+              $locals_game["Game_IA"].$set_defaults = function(value){
+                return $locals_game["Game_IA"] = Game_IA$32(value)
+              }
+              ;$locals.$line_info = "397,game";if($locals.$f_trace !== _b_.None){$B.trace_line()};_b_.None;
+              var JoueurContreJoueur$35 = function($defaults){
+                function JoueurContreJoueur35(_x_size, _y_size){
+                  var $locals_game_JoueurContreJoueur_15 = {},
+                      $locals = $locals_game_JoueurContreJoueur_15;
+                  var $len = arguments.length;
+                  var last_arg;if($len > 0 && ((last_arg = arguments[$len - 1]) !== undefined) && last_arg.$nat !== undefined){
+                    $locals_game_JoueurContreJoueur_15 = $locals = $B.args("JoueurContreJoueur", 2, {"x_size":null, "y_size":null}, ["x_size", "y_size"], arguments, $defaults, null, null);
+                  }else{
+                    if($len == 2){
+                      $locals_game_JoueurContreJoueur_15 = $locals = $B.conv_undef({"x_size": _x_size, "y_size": _y_size})
+                    }else if($len > 2){
+                      $B.wrong_nb_args("JoueurContreJoueur", $len, 2, ["x_size","y_size"])
+                    }else if($len + Object.keys($defaults).length < 2){
+                      $B.wrong_nb_args("JoueurContreJoueur", $len, 2, ["x_size","y_size"])
+                    }else{
+                      $locals_game_JoueurContreJoueur_15 = $locals = $B.conv_undef({"x_size": _x_size, "y_size": _y_size})
+                      var defparams = ["x_size","y_size"]
+                      for(var i = $len; i < defparams.length; i++){
+                        $locals[defparams[i]] = $defaults[defparams[i]]
+                      }
+                    }
+                  }
+                  $locals.$line_info = "397,game"
+                  var $top_frame = ["game_JoueurContreJoueur_15", $locals,"game", $locals_game, JoueurContreJoueur35]
+                  $locals.$f_trace = $B.enter_frame($top_frame)
+                  var $stack_length = $B.frames_stack.length;
+                  try{
+                    $B.js_this = this;
+                    ;$locals.$line_info = "398,game";if($locals.$f_trace !== _b_.None){$B.trace_line()};_b_.None;
+                    $B.String("\n\
+    permet de jouer a deux (joueur vs joueur)\n\
+    utilise Remplace( int , int , list ),\n\
+    possible( int , int or str  , list ), Contient( list )\n\
+    et ResetGrid( int , int )");
+                    ;$locals.$line_info = "405,game";if($locals.$f_trace !== _b_.None){$B.trace_line()};_b_.None;
+                    $locals_game_JoueurContreJoueur_15["grid"] = $B.$call($locals_game["ResetGrid"])($B.$check_def_local("x_size",$locals["x_size"]), $B.$check_def_local("y_size",$locals["y_size"]));
+                    ;$locals.$line_info = "406,game";if($locals.$f_trace !== _b_.None){$B.trace_line()};_b_.None;
+                    $locals_game_JoueurContreJoueur_15["joueur"] = $B.$call($locals_game["randrange"])(0, 1);
+                    ;$locals.$line_info = "408,game";if($locals.$f_trace !== _b_.None){$B.trace_line()};_b_.None;
+                    $B.$call(($locals_game["print"] || _b_.print))($B.String("Voulez vous nommer les joueur ? (OUI/NON)"));
+                    ;$locals.$line_info = "409,game";if($locals.$f_trace !== _b_.None){$B.trace_line()};_b_.None;
+                    $locals_game_JoueurContreJoueur_15["reponse"] = $B.$call(($locals_game["input"] || _b_.input))();
+                    ;$locals.$line_info = "410,game";if($locals.$f_trace !== _b_.None){$B.trace_line()};_b_.None;
+                    if($B.$bool($B.$test_expr($B.$test_item((typeof $locals["reponse"] == "string" ? $locals["reponse"]==$B.String("OUI") : $B.rich_comp("__eq__",$locals["reponse"],$B.String("OUI"))))||$B.$test_item((typeof $locals["reponse"] == "string" ? $locals["reponse"]==$B.String("oui") : $B.rich_comp("__eq__",$locals["reponse"],$B.String("oui"))))))){
+                      ;$locals.$line_info = "411,game";if($locals.$f_trace !== _b_.None){$B.trace_line()};_b_.None;
+                      $locals_game_JoueurContreJoueur_15["joueurName"] = $B.$list([]);
+                      ;$locals.$line_info = "412,game";if($locals.$f_trace !== _b_.None){$B.trace_line()};_b_.None;
+                      $B.$call(($locals_game["print"] || _b_.print))($B.String("Nom du premier :"));
+                      ;$locals.$line_info = "413,game";if($locals.$f_trace !== _b_.None){$B.trace_line()};_b_.None;
+                      var $temp,$left;
+                      if($locals["joueurName"] === undefined){
+                        throw $B.name_error('joueurName')
+                      }
+                      $temp = $B.$list([$B.$call(($locals_game["input"] || _b_.input))()]);
+                      $left = $locals_game_JoueurContreJoueur_15["joueurName"]
+                      if(typeof $temp.valueOf() == "number" && $left.constructor === Number && Number.isSafeInteger($left+$temp)){
+                        (typeof $temp == "number" && typeof $left == "number") ? $locals_game_JoueurContreJoueur_15["joueurName"]+=$temp : $locals_game_JoueurContreJoueur_15["joueurName"] = new Number($left+$temp.valueOf())
+                      }else if(typeof $left == "string" && typeof $temp == "string"){
+                        $locals_game_JoueurContreJoueur_15["joueurName"] = $left + $temp
+                      }else{
+                        var iadd = $B.$getattr($locals["joueurName"],"__iadd__", null)
+                        if(iadd === null){
+                          ;$locals.$line_info = "413,game";if($locals.$f_trace !== _b_.None){$B.trace_line()};_b_.None;
+                          $locals_game_JoueurContreJoueur_15["joueurName"] = $B.add($locals_game_JoueurContreJoueur_15["joueurName"], $temp);
+                        }else{
+                          ;$locals.$line_info = "413,game";if($locals.$f_trace !== _b_.None){$B.trace_line()};_b_.None;
+                          $locals_game_JoueurContreJoueur_15["joueurName"] = iadd($temp)
+                          ;
+                        }
+                      }
+                      ;$locals.$line_info = "414,game";if($locals.$f_trace !== _b_.None){$B.trace_line()};_b_.None;
+                      $B.$call(($locals_game["print"] || _b_.print))($B.String("Nom du second :"));
+                      ;$locals.$line_info = "415,game";if($locals.$f_trace !== _b_.None){$B.trace_line()};_b_.None;
+                      var $temp,$left;
+                      if($locals["joueurName"] === undefined){
+                        throw $B.name_error('joueurName')
+                      }
+                      $temp = $B.$list([$B.$call(($locals_game["input"] || _b_.input))()]);
+                      $left = $locals_game_JoueurContreJoueur_15["joueurName"]
+                      if(typeof $temp.valueOf() == "number" && $left.constructor === Number && Number.isSafeInteger($left+$temp)){
+                        (typeof $temp == "number" && typeof $left == "number") ? $locals_game_JoueurContreJoueur_15["joueurName"]+=$temp : $locals_game_JoueurContreJoueur_15["joueurName"] = new Number($left+$temp.valueOf())
+                      }else if(typeof $left == "string" && typeof $temp == "string"){
+                        $locals_game_JoueurContreJoueur_15["joueurName"] = $left + $temp
+                      }else{
+                        var iadd = $B.$getattr($locals["joueurName"],"__iadd__", null)
+                        if(iadd === null){
+                          ;$locals.$line_info = "415,game";if($locals.$f_trace !== _b_.None){$B.trace_line()};_b_.None;
+                          $locals_game_JoueurContreJoueur_15["joueurName"] = $B.add($locals_game_JoueurContreJoueur_15["joueurName"], $temp);
+                        }else{
+                          ;$locals.$line_info = "415,game";if($locals.$f_trace !== _b_.None){$B.trace_line()};_b_.None;
+                          $locals_game_JoueurContreJoueur_15["joueurName"] = iadd($temp)
+                          ;
+                        }
+                      }
+                    }else{
+                      ;$locals.$line_info = "417,game";if($locals.$f_trace !== _b_.None){$B.trace_line()};_b_.None;
+                      $locals_game_JoueurContreJoueur_15["joueurName"] = $B.$list([$B.String("1"),$B.String("2")]);
+                    }
+                    var $no_break36 = true
+                    ;$locals.$line_info = "418,game";if($locals.$f_trace !== _b_.None){$B.trace_line()};_b_.None;
+                    while($B.$bool($no_break36 && $B.$call($locals_game["Contient"])($locals["grid"]))){
+                      ;$locals.$line_info = "419,game";if($locals.$f_trace !== _b_.None){$B.trace_line()};_b_.None;
+                      $locals_game_JoueurContreJoueur_15["x"] = $B.String("");
+                      ;$locals.$line_info = "420,game";if($locals.$f_trace !== _b_.None){$B.trace_line()};_b_.None;
+                      $locals_game_JoueurContreJoueur_15["y"] = $B.String("");
+                      var $no_break37 = true
+                      ;$locals.$line_info = "421,game";if($locals.$f_trace !== _b_.None){$B.trace_line()};_b_.None;
+                      while($B.$bool($no_break37 && $B.$call($locals_game["possible"])($locals["x"], $locals["y"], $locals["grid"]))){
+                        ;$locals.$line_info = "422,game";if($locals.$f_trace !== _b_.None){$B.trace_line()};_b_.None;
+                        $B.$call($locals_game["MontreJeu"])($locals["grid"]);
+                        ;$locals.$line_info = "423,game";if($locals.$f_trace !== _b_.None){$B.trace_line()};_b_.None;
+                        if($B.$bool($B.$test_expr($B.$test_item((typeof $locals["x"] == "string" ? $locals["x"]!=$B.String("") : $B.rich_comp("__ne__",$locals["x"],$B.String(""))))&&$B.$test_item((typeof $locals["y"] == "string" ? $locals["y"]!=$B.String("") : $B.rich_comp("__ne__",$locals["y"],$B.String(""))))))){
+                          ;$locals.$line_info = "424,game";if($locals.$f_trace !== _b_.None){$B.trace_line()};_b_.None;
+                          $B.$call(($locals_game["print"] || _b_.print))($B.String("mauvaise entree"));
+                        }
+                        ;$locals.$line_info = "425,game";if($locals.$f_trace !== _b_.None){$B.trace_line()};_b_.None;
+                        $B.$call(($locals_game["print"] || _b_.print))($B.add($B.String("joueur: "), $B.$getitem($B.$check_def_local("joueurName",$locals["joueurName"]),$locals["joueur"])));
+                        ;$locals.$line_info = "426,game";if($locals.$f_trace !== _b_.None){$B.trace_line()};_b_.None;
+                        $locals_game_JoueurContreJoueur_15["x"] = $B.$call(($locals_game["input"] || _b_.input))($B.String("Quelle valeur de x? "));
+                        ;$locals.$line_info = "427,game";if($locals.$f_trace !== _b_.None){$B.trace_line()};_b_.None;
+                        $locals_game_JoueurContreJoueur_15["y"] = $B.$call(($locals_game["input"] || _b_.input))($B.String("Quelle valeur de y? "));
+                        $locals.$line_info = "421,game";if($locals.$f_trace !== _b_.None){
+                          $B.trace_line()};_b_.None;
+                        }
+                        ;$locals.$line_info = "428,game";if($locals.$f_trace !== _b_.None){$B.trace_line()};_b_.None;
+                        $locals_game_JoueurContreJoueur_15["x"] = $B.$call(($locals_game["int"] || _b_.int))($locals["x"]);
+                        ;$locals.$line_info = "429,game";if($locals.$f_trace !== _b_.None){$B.trace_line()};_b_.None;
+                        $locals_game_JoueurContreJoueur_15["y"] = $B.$call(($locals_game["int"] || _b_.int))($locals["y"]);
+                        ;$locals.$line_info = "430,game";if($locals.$f_trace !== _b_.None){$B.trace_line()};_b_.None;
+                        $locals_game_JoueurContreJoueur_15["grid"] = $B.$call($locals_game["Remplace"])($locals["x"], $locals["y"], $locals["grid"]);
+                        ;$locals.$line_info = "431,game";if($locals.$f_trace !== _b_.None){$B.trace_line()};_b_.None;
+                        $locals_game_JoueurContreJoueur_15["joueur"] = ($locals["joueur"].valueOf && typeof $locals["joueur"].valueOf() == "number" ? (typeof $locals["joueur"] == "number" ? $B.sub(1,$locals["joueur"]) : new Number($B.sub(1,$locals["joueur"]))): $B.rich_op("sub",1,$locals["joueur"]));
+                        $locals.$line_info = "418,game";if($locals.$f_trace !== _b_.None){
+                          $B.trace_line()};_b_.None;
+                        }
+                        ;$locals.$line_info = "432,game";if($locals.$f_trace !== _b_.None){$B.trace_line()};_b_.None;
+                        $B.$call($locals_game["MontreJeu"])($locals["grid"]);
+                        ;$locals.$line_info = "433,game";if($locals.$f_trace !== _b_.None){$B.trace_line()};_b_.None;
+                        $B.$call(($locals_game["print"] || _b_.print))($B.add($B.$getitem($B.$check_def_local("joueurName",$locals["joueurName"]),$locals["joueur"]), $B.String(" a gagne la partie")));
+                        if($locals.$f_trace !== _b_.None){
+                          $B.trace_return(_b_.None)
+                        }
+                        $B.leave_frame({$locals});return _b_.None
+                      }catch(err){
+                        $B.set_exc(err)
+                        if((! err.$in_trace_func) && $locals.$f_trace !== _b_.None){
+                          $locals.$f_trace = $B.trace_exception()
+                        }
+                        $B.leave_frame({$locals});throw err
+                      }
+                    }
+                    JoueurContreJoueur35.$is_func = true
+                    JoueurContreJoueur35.$infos = {
+                      __name__:"JoueurContreJoueur",
+                      __qualname__:"JoueurContreJoueur",
+                      __defaults__ : _b_.None,
+                      __kwdefaults__ : _b_.None,
+                      __annotations__: {},
+                      __dict__: $B.empty_dict(),
+                      __doc__: $B.String("\n\
+    permet de jouer a deux (joueur vs joueur)\n\
+    utilise Remplace( int , int , list ),\n\
+    possible( int , int or str  , list ), Contient( list )\n\
+    et ResetGrid( int , int )"),
+                      __module__ : "game",
+                      __code__:{
+                        co_argcount:2,
+                        co_filename:$locals_game["__file__"] || "<string>",
+                        co_firstlineno:397,
+                        co_flags:67,
+                        co_freevars: ["ResetGrid","randrange","Contient","possible","MontreJeu","Remplace"],
+                        co_kwonlyargcount:0,
+                        co_name: "JoueurContreJoueur",
+                        co_nlocals: 8,
+                        co_posonlyargcount: 0,
+                        co_varnames: $B.fast_tuple(["x_size", "y_size", "grid", "joueur", "reponse", "joueurName", "x", "y"])
+                      }
+                    };_b_.None;
+                    return JoueurContreJoueur35
+                  }
+                  $locals_game["JoueurContreJoueur"] = JoueurContreJoueur$35({})
+                  $locals_game["JoueurContreJoueur"].$set_defaults = function(value){
+                    return $locals_game["JoueurContreJoueur"] = JoueurContreJoueur$35(value)
+                  }
+                  ;$locals.$line_info = "437,game";if($locals.$f_trace !== _b_.None){$B.trace_line()};_b_.None;
+                  var MainGame$38 = function($defaults){
+                    function MainGame38(){
+                      var $locals_game_MainGame_16 = {},
+                          $locals = $locals_game_MainGame_16;
+                      var $len = arguments.length;
+                      var last_arg;if($len > 0 && ((last_arg = arguments[$len - 1]) !== undefined) && last_arg.$nat !== undefined){
+                        $locals_game_MainGame_16 = $locals = $B.args("MainGame", 0, {}, [], arguments, $defaults, null, null);
+                      }else{
+                        if($len == 0){
+                          $locals_game_MainGame_16 = $locals = $B.conv_undef({})
+                        }else if($len > 0){
+                          $B.wrong_nb_args("MainGame", $len, 0, [])
+                        }
+                      }
+                      $locals.$line_info = "437,game"
+                      var $top_frame = ["game_MainGame_16", $locals,"game", $locals_game, MainGame38]
+                      $locals.$f_trace = $B.enter_frame($top_frame)
+                      var $stack_length = $B.frames_stack.length;
+                      try{
+                        $B.js_this = this;
+                        ;$locals.$line_info = "438,game";if($locals.$f_trace !== _b_.None){$B.trace_line()};_b_.None;
+                        $B.String("\n\
+    permet de jouer au jeu en choisissant son mode (ex joueur vs IA)\n\
+    utilise Game_IA() et JoueurContreJoueur()");
+                        ;$locals.$line_info = "442,game";if($locals.$f_trace !== _b_.None){$B.trace_line()};_b_.None;
+                        $locals_game_MainGame_16["mode"] = $B.String("start");
+                        var $no_break39 = true
+                        ;$locals.$line_info = "443,game";if($locals.$f_trace !== _b_.None){$B.trace_line()};_b_.None;
+                        while($B.$bool($no_break39 && (typeof $locals["mode"] == "string" ? $locals["mode"]!=$B.String("stop") : $B.rich_comp("__ne__",$locals["mode"],$B.String("stop"))))){
+                          ;$locals.$line_info = "444,game";if($locals.$f_trace !== _b_.None){$B.trace_line()};_b_.None;
+                          $B.$call(($locals_game["print"] || _b_.print))($B.String("Choisissez:"));
+                          ;$locals.$line_info = "445,game";if($locals.$f_trace !== _b_.None){$B.trace_line()};_b_.None;
+                          $B.$call(($locals_game["print"] || _b_.print))($B.String("1: joueur contre IA"));
+                          ;$locals.$line_info = "446,game";if($locals.$f_trace !== _b_.None){$B.trace_line()};_b_.None;
+                          $B.$call(($locals_game["print"] || _b_.print))($B.String("2: joueur contre joueur"));
+                          ;$locals.$line_info = "447,game";if($locals.$f_trace !== _b_.None){$B.trace_line()};_b_.None;
+                          $locals_game_MainGame_16["mode"] = $B.$call(($locals_game["input"] || _b_.input))();
+                          ;$locals.$line_info = "448,game";if($locals.$f_trace !== _b_.None){$B.trace_line()};_b_.None;
+                          $locals_game_MainGame_16["x"] = $B.String("");
+                          ;$locals.$line_info = "449,game";if($locals.$f_trace !== _b_.None){$B.trace_line()};_b_.None;
+                          $locals_game_MainGame_16["y"] = $B.String("");
+                          var $no_break40 = true
+                          ;$locals.$line_info = "450,game";if($locals.$f_trace !== _b_.None){$B.trace_line()};_b_.None;
+                          while($B.$bool($no_break40 && $B.$test_expr($B.$test_item($B.$call($locals_game["VerifInput"])($locals["x"], 30))||$B.$test_item($B.$call($locals_game["VerifInput"])($locals["y"], 30))))){
+                            ;$locals.$line_info = "451,game";if($locals.$f_trace !== _b_.None){$B.trace_line()};_b_.None;
+                            if($B.$bool($B.$test_expr($B.$test_item((typeof $locals["x"] == "string" ? $locals["x"]!=$B.String("") : $B.rich_comp("__ne__",$locals["x"],$B.String(""))))&&$B.$test_item((typeof $locals["y"] == "string" ? $locals["y"]!=$B.String("") : $B.rich_comp("__ne__",$locals["y"],$B.String(""))))))){
+                              ;$locals.$line_info = "452,game";if($locals.$f_trace !== _b_.None){$B.trace_line()};_b_.None;
+                              $B.$call(($locals_game["print"] || _b_.print))($B.String("Mauvaise entree !!"));
+                            }
+                            ;$locals.$line_info = "454,game";if($locals.$f_trace !== _b_.None){$B.trace_line()};_b_.None;
+                            $B.$call(($locals_game["print"] || _b_.print))($B.String("Choisissez la largeur de votre plateau (max: 30)"));
+                            ;$locals.$line_info = "455,game";if($locals.$f_trace !== _b_.None){$B.trace_line()};_b_.None;
+                            $locals_game_MainGame_16["x"] = $B.$call(($locals_game["input"] || _b_.input))();
+                            ;$locals.$line_info = "456,game";if($locals.$f_trace !== _b_.None){$B.trace_line()};_b_.None;
+                            $B.$call(($locals_game["print"] || _b_.print))($B.String("Choisissez la hauteur de votre plateau (max: 30)"));
+                            ;$locals.$line_info = "457,game";if($locals.$f_trace !== _b_.None){$B.trace_line()};_b_.None;
+                            $locals_game_MainGame_16["y"] = $B.$call(($locals_game["input"] || _b_.input))();
+                            $locals.$line_info = "450,game";if($locals.$f_trace !== _b_.None){
+                              $B.trace_line()};_b_.None;
+                            }
+                            ;$locals.$line_info = "459,game";if($locals.$f_trace !== _b_.None){$B.trace_line()};_b_.None;
+                            if($B.$bool((typeof $locals["mode"] == "string" ? $locals["mode"]==$B.String("1") : $B.rich_comp("__eq__",$locals["mode"],$B.String("1"))))){
+                              ;$locals.$line_info = "460,game";if($locals.$f_trace !== _b_.None){$B.trace_line()};_b_.None;
+                              $B.$call($locals_game["Game_IA"])($B.$call(($locals_game["int"] || _b_.int))($locals["x"]), $B.$call(($locals_game["int"] || _b_.int))($locals["y"]));
+                            }else{
+                              ;$locals.$line_info = "462,game";if($locals.$f_trace !== _b_.None){$B.trace_line()};_b_.None;
+                              $B.$call($locals_game["JoueurContreJoueur"])($B.$call(($locals_game["int"] || _b_.int))($locals["x"]), $B.$call(($locals_game["int"] || _b_.int))($locals["y"]));
+                            }
+                            ;$locals.$line_info = "463,game";if($locals.$f_trace !== _b_.None){$B.trace_line()};_b_.None;
+                            $B.$call(($locals_game["print"] || _b_.print))($B.String("Appuyez sur entre pour recommencer"));
+                            ;$locals.$line_info = "464,game";if($locals.$f_trace !== _b_.None){$B.trace_line()};_b_.None;
+                            $locals_game_MainGame_16["mode"] = $B.$call(($locals_game["input"] || _b_.input))();
+                            $locals.$line_info = "443,game";if($locals.$f_trace !== _b_.None){
+                              $B.trace_line()};_b_.None;
+                            }
+                            if($locals.$f_trace !== _b_.None){
+                              $B.trace_return(_b_.None)
+                            }
+                            $B.leave_frame({$locals});return _b_.None
+                          }catch(err){
+                            $B.set_exc(err)
+                            if((! err.$in_trace_func) && $locals.$f_trace !== _b_.None){
+                              $locals.$f_trace = $B.trace_exception()
+                            }
+                            $B.leave_frame({$locals});throw err
+                          }
+                        }
+                        MainGame38.$is_func = true
+                        MainGame38.$infos = {
+                          __name__:"MainGame",
+                          __qualname__:"MainGame",
+                          __defaults__ : _b_.None,
+                          __kwdefaults__ : _b_.None,
+                          __annotations__: {},
+                          __dict__: $B.empty_dict(),
+                          __doc__: $B.String("\n\
+    permet de jouer au jeu en choisissant son mode (ex joueur vs IA)\n\
+    utilise Game_IA() et JoueurContreJoueur()"),
+                          __module__ : "game",
+                          __code__:{
+                            co_argcount:0,
+                            co_filename:$locals_game["__file__"] || "<string>",
+                            co_firstlineno:437,
+                            co_flags:67,
+                            co_freevars: ["VerifInput","Game_IA","JoueurContreJoueur"],
+                            co_kwonlyargcount:0,
+                            co_name: "MainGame",
+                            co_nlocals: 3,
+                            co_posonlyargcount: 0,
+                            co_varnames: $B.fast_tuple(["mode", "x", "y"])
+                          }
+                        };_b_.None;
+                        return MainGame38
+                      }
+                      $locals_game["MainGame"] = MainGame$38({})
+                      $locals_game["MainGame"].$set_defaults = function(value){
+                        return $locals_game["MainGame"] = MainGame$38(value)
+                      }
+                      ;$locals.$line_info = "470,game";if($locals.$f_trace !== _b_.None){$B.trace_line()};_b_.None;
+                      $B.$call(($locals_game["print"] || _b_.print))($B.String("Pour commencer a jouer entrez 'MainGame()' dans la console"));
+                      $B.leave_frame({$locals, value: _b_.None})
+                    }catch(err){
+                      $B.leave_frame({$locals, value: _b_.None})
+                      throw err
+                    }
+
+
+return $locals_game
+})(__BRYTHON__)
+</script>

@@ -25,23 +25,128 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.8.0/gsap.min.js"></script>
 </head>
 
-<body class="rectangleSoft">
+<body class="disable-select">
   <canvas id="myCanvas" width="1000" height="600">
   </canvas>
+  <div>
+    <h2 class="superShadow2"> Chocolat(e) ! </h2>
+    </div>
   <div>
     <hr></hr>
   </div>
   <div class="v1">
     </div>
-  <gName> Players: </gName>
+  <gName class="superShadow2"> Players: </gName>
   <div class="Player">
-    <img src="../img/player.png" alt="Player">
+    <img id="imgIcons" src="../img/player.png" alt="Player">
     <t> P1 </t>
   </div>
   <div class="AI">
-    <img src="../img/AI.png" alt="AI">
+    <img id="imgIcons" src="../img/AI.png" alt="AI">
     <t1> AI </t1>
   </div>
+  <div>
+    <div id="rectangleText">
+      Grid settings (max for both is 10 !):
+      </div>
+    <div id="rectangle">
+      </div>
+  </div>
+<div>
+  <form name='grid' id="grid">
+    Desired Length: <input type='number' name='length' min=1 max=10 step=1 value=1 />
+    Desired Height: <input type='number' name='height' min=1 max=10 step=1 value=1 />
+    <input type='button' value='Change' />
+  </form>
+</div>
+<div id='choc'></div>
+  <template>
+    <img id="imgPos" src="../img/chocci.png" >
+  </template>
+  <script type="text/javascript">
+    const d=document;
+    const q=(e,n=d)=>n.querySelector(e);
+    const form=d.forms.grid;
+
+
+    document.querySelector('[type="button"]').addEventListener('click', (e) => {
+      let choc = q('#choc');
+        choc.innerHTML='';
+
+      if( form.height.value>10 )form.height.value=10;
+      if( form.length.value>10 )form.length.value=10;
+
+      for( let y=0; y < form.height.value; y++ ){
+
+        let div=d.createElement('div');
+        choc.appendChild( div );
+
+        for( let x=0; x < form.length.value; x++ ){
+          div.appendChild( q('#imgPos', q('template').content).cloneNode(true) )
+}
+}
+});
+    </script>
+
+
+    <!-- <form id="grid">
+      Desired Height: <input type="text" id="height">
+      Desired Length: <input type="text" id="length">
+      <input type="button" value="Submit" id="submit">
+      </form> -->
+    <!-- <script>
+      function changeSize(){
+        document.getElementById("submit").submit();
+      }
+      </script> -->
+
+    <!-- <div id="choc"> -->
+      <!-- <script type="text/javascript">
+        const d=document;
+        const q=(e,n=d)=>n.querySelector(e);
+        const form=d.forms.grid;
+
+
+
+        document.querySelector('[type="button"]').addEventListener('click', (e) => {
+          let choc = q('#choc');
+            choc.innerHTML='';
+
+          if( form.height.value>10 )form.height.value=10;
+          if( form.length.value>10 )form.length.value=10;
+
+          for( let y=0; y < form.height.value; y++ ){
+
+            let div=d.createElement('div');
+            choc.appendChild( div );
+
+            for( let x=0; x < form.length.value; x++ ){
+              div.appendChild( q('img', q('template').content).cloneNode(true) )
+  }
+  }
+});
+        </script> -->
+  <!-- <script type="text/javascript">
+
+      function imgRep(){
+          x = document.getElementById("length").value;
+          y = document.getElementById("height").value;
+          var button = document.getElementById("submit");
+          for (var i = 0; x*y; i++) {
+  $("#choc").append($(".choc").last().clone(true));
+}
+          }
+
+      var button = document.getElementById("submit"),
+      x = button.form.length.value;
+      y = button.form.height.value;
+      if (x > 10 || y > 10){
+        alert("Please choose a valid value ranging from 1 to 10 for the size!")
+      }
+      button.onclick = function() {
+    imgRep();
+      }
+</script> -->
 <!---
 TO USE FOR CHOCOLATE PATTERN REPETTION, LOOK FUNC: BACKGROUND-REPEAT;
 .five-star-line { height: 20px; background-image: url(img/5-star-rating.png); background-repeat: repeat-x; background-position: center; background-color: transparent; border: none; width: 50%; margin: auto; margin-top: 5%; margin-bottom: 5%; }

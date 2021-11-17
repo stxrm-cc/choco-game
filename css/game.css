@@ -15,14 +15,7 @@ h2 {
   font-family: 'Press Start 2P', cursive;
 
 }
-.GUI_img{
-  width : 4%;
-  height: auto;
-  cursor: default;
-  position: relative;
-  top: 140px;
-  left: 150px;
-}
+
 .superShadow2 {
   text-shadow:     0 1px 0 hsl(11,0%,0%),
 	                 0 2px 0 hsl(11,0%,0%),
