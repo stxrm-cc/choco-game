@@ -3,6 +3,7 @@
 body, body * {
   box-sizing:border-box;
 }
+
 h2 {
   color: white;
   font-size: 40px;
@@ -15,6 +16,7 @@ h2 {
   font-family: 'Press Start 2P', cursive;
 
 }
+
 
 .superShadow2 {
   text-shadow:     0 1px 0 hsl(11,0%,0%),
